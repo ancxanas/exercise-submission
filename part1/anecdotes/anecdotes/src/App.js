@@ -49,7 +49,6 @@ const App = () => {
   const handlePoints = () => {
     const copy = [...points];
     copy[selected] += 1;
-    console.log(copy);
     setPoints(copy);
   };
 

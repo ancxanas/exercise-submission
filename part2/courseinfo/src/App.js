@@ -10,7 +10,7 @@ const Course = ({ name, parts }) => {
   );
 };
 
-const Header = ({ name }) => <h1>{name}</h1>;
+const Header = ({ name }) => <h2>{name}</h2>;
 
 const Part = ({ name, exercises }) => (
   <p>
@@ -26,7 +26,9 @@ const Content = ({ parts }) => (
   </>
 );
 
-const Total = ({ sum }) => <p>Number of exercises {sum}</p>;
+const Total = ({ sum }) => (
+  <p style={{ fontWeight: 'bold' }}>total of {sum} exercises</p>
+);
 
 const App = () => {
   const courses = [
@@ -74,9 +76,14 @@ const App = () => {
     },
   ];
 
-  return courses.map((course) => (
-    <Course key={course.id} name={course.name} parts={course.parts} />
-  ));
+  return (
+    <>
+      <h1>Web development curriculum</h1>
+      {courses.map((course) => (
+        <Course key={course.id} name={course.name} parts={course.parts} />
+      ))}
+    </>
+  );
 };
 
 export default App;

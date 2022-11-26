@@ -8,6 +8,9 @@ const App = () => {
 
   const addName = (e) => {
     e.preventDefault();
+    const names = persons.map((person) => person.name);
+    const nameCheck = names.some((name) => name === newName);
+    if (nameCheck) return alert(`${newName} is already added to phonebook`);
     const nameObject = {
       name: newName,
     };
@@ -17,7 +20,6 @@ const App = () => {
   };
 
   const handleNameChange = (e) => {
-    console.log(e.target.value);
     setNewName(e.target.value);
   };
 
@@ -38,6 +40,7 @@ const App = () => {
           <Number key={person.name} name={person.name} />
         ))}
       </ul>
+      <div>debug: {newName}</div>
     </div>
   );
 };

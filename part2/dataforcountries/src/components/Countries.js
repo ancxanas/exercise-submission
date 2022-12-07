@@ -1,3 +1,47 @@
+const Name = ({ countries }) => (
+  <h1>
+    {countries.map((country) => (
+      <Country key={country.name.common} name={country.name.common} />
+    ))}
+  </h1>
+);
+
+const Details = ({ countries }) => (
+  <div>
+    {countries.map((country) => (
+      <Info key={country.capital} name="capital" value={country.capital} />
+    ))}
+    {countries.map((country) => (
+      <Info key={country.area} name="area" value={country.area} />
+    ))}
+  </div>
+);
+
+const Languages = ({ countries }) => (
+  <ul>
+    {countries.map((country) => {
+      return Object.values(country.languages).map((language) => (
+        <Language key={language} language={language} />
+      ));
+    })}
+  </ul>
+);
+
+const Flag = ({ countries }) => (
+  <div>
+    {countries.map((country) => (
+      <img
+        key={country.name.common}
+        src={country.flags.svg}
+        width="150"
+        alt={`flag of ${country.name.common}`}
+      />
+    ))}
+  </div>
+);
+
+const Language = ({ language }) => <li>{language}</li>;
+
 const Country = ({ name }) => <div>{name}</div>;
 
 const Info = ({ name, value }) => (
@@ -23,23 +67,11 @@ const Countries = ({ countries, showAll, filterCountries }) => {
   if (countriesToShow.length === 1)
     return (
       <>
-        <h1>
-          {countriesToShow.map((country) => (
-            <Country key={country.name.common} name={country.name.common} />
-          ))}
-        </h1>
-        <div>
-          {countriesToShow.map((country) => (
-            <Info
-              key={country.capital}
-              name="capital"
-              value={country.capital}
-            />
-          ))}
-          {countriesToShow.map((country) => (
-            <Info key={country.area} name="area" value={country.area} />
-          ))}
-        </div>
+        <Name countries={countriesToShow} />
+        <Details countries={countriesToShow} />
+        <h4>languages:</h4>
+        <Languages countries={countriesToShow} />
+        <Flag countries={countriesToShow} />
       </>
     );
 

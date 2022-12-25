@@ -1,7 +1,9 @@
+import { useState } from 'react';
+
 const Name = ({ countries }) => (
   <h1>
     {countries.map((country) => (
-      <Country key={country.name.common} name={country.name.common} />
+      <CountryName key={country.name.common} name={country.name.common} />
     ))}
   </h1>
 );
@@ -42,7 +44,40 @@ const Flag = ({ countries }) => (
 
 const Language = ({ language }) => <li>{language}</li>;
 
-const Country = ({ name }) => <div>{name}</div>;
+const CountryName = ({ name }) => <div>{name}</div>;
+
+const Country = ({ name, capital, area, languages, flag }) => {
+  const [isShown, setIsShown] = useState(false);
+
+  const showDetails = () => {
+    setIsShown((show) => !show);
+  };
+
+  return (
+    <>
+      <div>{name}</div>
+      <Button name={isShown ? 'hide' : 'show'} onClick={showDetails} />
+      {isShown && (
+        <>
+          <h1 key={name}>{name}</h1>
+          <Info key={capital} name="capital" value={capital} />
+          <Info key={area} name="area" value={area} />
+          <h4>languages:</h4>
+          <ul>
+            {Object.values(languages).map((language) => (
+              <li key={language}>{language}</li>
+            ))}
+          </ul>
+          <div>
+            <img key={name} src={flag} width="150" alt={`flag of ${name}`} />
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+const Button = ({ name, onClick }) => <button onClick={onClick}>{name}</button>;
 
 const Info = ({ name, value }) => (
   <div>
@@ -78,7 +113,14 @@ const Countries = ({ countries, showAll, filterCountries }) => {
   return (
     <div>
       {countriesToShow.map((country) => (
-        <Country key={country.name.common} name={country.name.common} />
+        <Country
+          key={country.name.common}
+          name={country.name.common}
+          capital={country.capital}
+          area={country.area}
+          languages={country.languages}
+          flag={country.flags.svg}
+        />
       ))}
     </div>
   );

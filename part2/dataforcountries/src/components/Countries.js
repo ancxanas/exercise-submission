@@ -55,8 +55,10 @@ const Country = ({ name, capital, area, languages, flag }) => {
 
   return (
     <>
-      <div>{name}</div>
-      <Button name={isShown ? 'hide' : 'show'} onClick={showDetails} />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div>{name}</div>
+        <Button name={isShown ? 'hide' : 'show'} onClick={showDetails} />
+      </div>
       {isShown && (
         <>
           <h1 key={name}>{name}</h1>

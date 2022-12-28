@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 const Name = ({ countries }) => (
   <h1>
@@ -42,9 +43,19 @@ const Flag = ({ countries }) => (
   </div>
 );
 
+const Capital = ({ countries }) => countries.map((country) => country.capital);
+
 const Language = ({ language }) => <li>{language}</li>;
 
 const CountryName = ({ name }) => <div>{name}</div>;
+
+const Button = ({ name, onClick }) => <button onClick={onClick}>{name}</button>;
+
+const Info = ({ name, value }) => (
+  <div>
+    {name} {value}
+  </div>
+);
 
 const Country = ({ name, capital, area, languages, flag }) => {
   const [isShown, setIsShown] = useState(false);
@@ -79,15 +90,9 @@ const Country = ({ name, capital, area, languages, flag }) => {
   );
 };
 
-const Button = ({ name, onClick }) => <button onClick={onClick}>{name}</button>;
-
-const Info = ({ name, value }) => (
-  <div>
-    {name} {value}
-  </div>
-);
-
 const Countries = ({ countries, showAll, filterCountries }) => {
+  const [weather, setWeather] = useState([]);
+
   const countriesToShow = showAll
     ? countries
     : countries.filter((country) =>
@@ -95,6 +100,34 @@ const Countries = ({ countries, showAll, filterCountries }) => {
           .toLowerCase()
           .includes(filterCountries.toLowerCase())
       );
+
+  const location =
+    countriesToShow.length === 1
+      ? countriesToShow.map((country) => country.capital)
+      : null;
+
+  console.log(location);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${process.env.REACT_APP_API_KEY}`
+      )
+      .then((response) => {
+        setWeather(response.data);
+      });
+  }, [location]);
+
+  console.log(weather);
+
+  const tempValue = Object.values(weather).map((value) => value.temp);
+  const temperature = Number(tempValue[3] - 273.15).toFixed(2);
+
+  console.log(temperature);
+
+  const windSpeed = Object.values(weather).map((value) => value.speed);
+  const wind = Number(windSpeed[5]);
+  console.log(wind);
 
   if (filterCountries === '') return;
 
@@ -109,6 +142,11 @@ const Countries = ({ countries, showAll, filterCountries }) => {
         <h4>languages:</h4>
         <Languages countries={countriesToShow} />
         <Flag countries={countriesToShow} />
+        <h3>
+          Weather in <Capital countries={countriesToShow} />
+        </h3>
+        <div>temperature {temperature} Celsius</div>
+        <div>wind {wind} m/s</div>
       </>
     );
 

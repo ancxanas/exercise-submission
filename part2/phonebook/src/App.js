@@ -12,9 +12,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    console.log('effect');
     axios.get('http://localhost:3001/persons').then((response) => {
-      console.log('promise fulfilled');
       setPersons(response.data);
     });
   }, []);
@@ -30,9 +28,11 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    setPersons(persons.concat(nameObject));
-    setNewName('');
-    setNewNumber('');
+    axios.post('http://localhost:3001/persons', nameObject).then((response) => {
+      setPersons(persons.concat(nameObject));
+      setNewName('');
+      setNewNumber('');
+    });
   };
 
   const handleNameChange = (e) => {

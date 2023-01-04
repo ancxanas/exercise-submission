@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "045-31235234",
+      "number": "308-615-5264",
       "id": 1
     },
     {
@@ -19,11 +19,6 @@
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "name": "Buday Nóra",
-      "number": "443-552-3892",
-      "id": 5
     }
   ]
 }

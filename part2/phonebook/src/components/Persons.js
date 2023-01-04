@@ -1,3 +1,5 @@
+import Number from './Number';
+
 const Persons = ({
   showAll,
   persons,
@@ -39,14 +41,5 @@ const Persons = ({
     </div>
   );
 };
-
-const Number = ({ name, number, onClick }) => (
-  <>
-    <div>
-      {name} {number}
-    </div>
-    <button onClick={onClick}>delete</button>
-  </>
-);
 
 export default Persons;

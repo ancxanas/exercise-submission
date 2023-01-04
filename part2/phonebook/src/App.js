@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
@@ -17,19 +18,47 @@ const App = () => {
     });
   }, []);
 
+  //Add a new contact
   const addName = (e) => {
     e.preventDefault();
-    const names = persons.map((person) => person.name);
-    const nameCheck = names.some((name) => name === newName);
-    if (nameCheck) return alert(`${newName} is already added to phonebook`);
+
+    const nameCheck = persons
+      .map((person) => person.name)
+      .some((name) => name === newName);
+
+    //Update an existing contact
+    if (nameCheck) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one`
+        )
+      ) {
+        const person = persons.find((person) => person.name === newName);
+        const id = person.id;
+        const changedNumber = { ...person, number: newNumber };
+
+        personService.update(`${id}`, changedNumber).then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== id ? person : returnedPerson
+            )
+          );
+          setNewName('');
+          setNewNumber('');
+        });
+      }
+      return;
+    }
+
     const nameObject = {
       name: newName,
       number: newNumber,
       id: persons.length + 1,
     };
 
-    personService.create(nameObject).then((returnedNote) => {
-      setPersons(persons.concat(returnedNote));
+    //Create new contact
+    personService.create(nameObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
       setNewName('');
       setNewNumber('');
     });

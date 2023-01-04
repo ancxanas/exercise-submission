@@ -11,12 +11,18 @@ const Persons = ({
         (person.name || '').toLowerCase().includes(filterNames.toLowerCase())
       );
 
+  //Delete contact
   const handleDelete = (id, name) => {
     if (window.confirm(`Delete ${name}`)) {
-      personService.remove(`${id}`).catch((error) => {
-        alert(`The contact ${name} was already deleted`);
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personService
+        .remove(`${id}`)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          alert(`The contact ${name} was already deleted`);
+          setPersons(persons.filter((person) => person.id !== id));
+        });
     }
   };
 

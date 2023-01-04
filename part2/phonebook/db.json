@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "045-31235234",
       "id": 1
     },
     {
@@ -24,26 +24,6 @@
       "name": "Buday Nóra",
       "number": "443-552-3892",
       "id": 5
-    },
-    {
-      "name": "Szathmári Mónika",
-      "number": "619-783-0970",
-      "id": 6
-    },
-    {
-      "name": "Meyer Kinga",
-      "number": "404-529-3163",
-      "id": 7
-    },
-    {
-      "name": "Áts Alexa",
-      "number": "617-771-5967",
-      "id": 8
-    },
-    {
-      "name": "Józsa Balázs",
-      "number": "330-555-1212",
-      "id": 9
     }
   ]
 }

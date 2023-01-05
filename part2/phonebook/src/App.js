@@ -12,6 +12,7 @@ const App = () => {
   const [filterNames, setFilterNames] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialNotes) => {
@@ -38,19 +39,30 @@ const App = () => {
         const id = person.id;
         const changedNumber = { ...person, number: newNumber };
 
-        personService.update(`${id}`, changedNumber).then((returnedPerson) => {
-          setPersons(
-            persons.map((person) =>
-              person.id !== id ? person : returnedPerson
-            )
-          );
-          setSuccessMessage(`Updated ${returnedPerson.name}`);
-          setTimeout(() => {
-            setSuccessMessage(null);
-          }, 3000);
-          setNewName('');
-          setNewNumber('');
-        });
+        personService
+          .update(`${id}`, changedNumber)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== id ? person : returnedPerson
+              )
+            );
+            setSuccessMessage(`Updated ${returnedPerson.name}`);
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 5000);
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch((error) => {
+            setPersons(persons.filter((person) => person.id !== id));
+            setErrorMessage(
+              `Information of ${newName} has already been removed from the server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+          });
       }
       return;
     }
@@ -67,7 +79,7 @@ const App = () => {
       setSuccessMessage(`Added ${returnedPerson.name}`);
       setTimeout(() => {
         setSuccessMessage(null);
-      }, 3000);
+      }, 5000);
       setNewName('');
       setNewNumber('');
     });
@@ -89,7 +101,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification
+        message={successMessage || errorMessage}
+        successMessage={successMessage}
+      />
       <Filter value={filterNames} onChange={handleFilterNames} />
       <h2>add a new</h2>
       <PersonForm

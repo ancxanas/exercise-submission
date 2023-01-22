@@ -43,12 +43,18 @@ app.use(
 app.get('/info', (request, response) => {
   const timeStamp = new Date().toString();
 
-  response.send(
-    `Phonebook has info for ${persons.length} people` +
-      '<br />' +
-      '<br />' +
-      `${timeStamp}`
-  );
+  Person.estimatedDocumentCount((error, count) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.send(
+        '<p>' +
+          `Phonebook has info for ${count} people` +
+          '<p>' +
+          `${timeStamp}`
+      );
+    }
+  });
 });
 
 app.post('/api/persons', (request, response) => {

@@ -74,15 +74,22 @@ const App = () => {
     };
 
     //Create new contact
-    personService.create(nameObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setSuccessMessage(`Added ${returnedPerson.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-      setNewName('');
-      setNewNumber('');
-    });
+    personService
+      .create(nameObject)
+      .then((createdPerson) => {
+        setPersons(persons.concat(createdPerson));
+        setSuccessMessage(`Added ${createdPerson.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch((error) => {
+        setErrorMessage(`Name should be at least three characters`);
+        setTimeout(() => setErrorMessage(null), 5000);
+        console.log(error.response.data.error);
+      });
   };
 
   const handleNameChange = (e) => {

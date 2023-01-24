@@ -55,10 +55,8 @@ const App = () => {
             setNewNumber('');
           })
           .catch((error) => {
-            setPersons(persons.filter((person) => person.id !== id));
-            setErrorMessage(
-              `Information of ${newName} has already been removed from the server`
-            );
+            // setPersons(persons.filter((person) => person.id !== id));
+            setErrorMessage(error.response.data.error);
             setTimeout(() => {
               setErrorMessage(null);
             }, 5000);
@@ -86,7 +84,7 @@ const App = () => {
         setNewNumber('');
       })
       .catch((error) => {
-        setErrorMessage(`Name should be at least three characters`);
+        setErrorMessage(error.response.data.error);
         setTimeout(() => setErrorMessage(null), 5000);
         console.log(error.response.data.error);
       });

@@ -33,17 +33,19 @@ app.get('/info', (request, response) => {
   });
 });
 
-app.post('/api/persons', (request, response, next) => {
-  const body = request.body;
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then((persons) => response.json(persons));
+});
 
-  const person = new Person({
-    name: body.name,
-    number: body.number,
-  });
-
-  person
-    .save()
-    .then((savedPerson) => response.json(savedPerson))
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(400).end();
+      }
+    })
     .catch((error) => next(error));
 });
 
@@ -65,20 +67,27 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then((persons) => response.json(persons));
-});
+app.post('/api/persons', (request, response, next) => {
+  const body = request.body;
 
-app.get('/api/persons/:id', (request, response, next) => {
-  Person.findById(request.params.id)
-    .then((person) => {
-      if (person) {
-        response.json(person);
-      } else {
-        response.status(400).end();
-      }
-    })
-    .catch((error) => next(error));
+  Person.find({}).then((people) => {
+    console.log(people.find((person) => person.name === body.name));
+
+    if (people.find((person) => person.name === body.name)) {
+      console.log('name must be unique');
+      return response.status(400).json({ error: 'name must be unique' });
+    } else {
+      const person = new Person({
+        name: body.name,
+        number: body.number,
+      });
+
+      person
+        .save()
+        .then((savedPerson) => response.json(savedPerson))
+        .catch((error) => next(error));
+    }
+  });
 });
 
 app.delete('/api/persons/:id', (request, response, next) => {

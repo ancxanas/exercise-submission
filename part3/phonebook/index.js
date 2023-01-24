@@ -9,7 +9,7 @@ app.use(express.static('build'));
 app.use(cors());
 app.use(express.json());
 
-morgan.token('body', (request, response) => JSON.stringify(request.body));
+morgan.token('body', (request) => JSON.stringify(request.body));
 app.use(
   morgan(
     ':method :url :status :res[content-length] - :response-time ms :body -'
@@ -92,7 +92,7 @@ app.post('/api/persons', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));

@@ -18,14 +18,37 @@ app.get('/api/blogs', (request, response) => {
   Blog.find({}).then((blog) => response.json(blog));
 });
 
-app.post('/api/blogs', (request, response) => {
-  const blog = request.body;
+app.post('/api/blogs', (request, response, next) => {
+  const body = request.body;
 
-  bloglist = bloglist.concat(blog);
-  response.json(blog);
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+  });
+
+  blog
+    .save()
+    .then((savedBlog) => response.json(savedBlog))
+    .catch((error) => next(error));
 });
 
-const PORT = 3001;
+const unknownEndpoint = (request, response) => {
+  response.status(404).json({ error: 'unknown endpoint' });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message);
+
+  next(error);
+};
+
+app.use(errorHandler);
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

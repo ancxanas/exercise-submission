@@ -72,9 +72,39 @@ test('blog without likes will be defaulted to zero', async () => {
     .expect('Content-Type', /application\/json/);
 
   const blogsAtEnd = await helper.blogsInDb();
-  const blog = blogsAtEnd.find((blog) => blog.title.includes('Nothing before'));
+  const addedBlog = blogsAtEnd.find((blog) =>
+    blog.title.includes('Nothing before')
+  );
 
-  expect(blog.likes).toEqual(0);
+  expect(addedBlog.likes).toEqual(0);
+});
+
+test('blog without title is not added', async () => {
+  const newBlog = {
+    author: 'Alhaan Hameed',
+    url: 'https://alhaan-hameed.com/',
+    likes: 90,
+  };
+
+  await api.post('/api/blogs').send(newBlog).expect(400);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
+
+test('blog without url is not added', async () => {
+  const newBlog = {
+    title: 'Dawn of the Justice',
+    author: 'Alhaan Hameed',
+    likes: 90,
+  };
+
+  await api.post('/api/blogs').send(newBlog).expect(400);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
 afterAll(async () => {

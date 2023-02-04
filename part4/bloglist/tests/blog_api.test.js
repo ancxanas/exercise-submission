@@ -33,6 +33,27 @@ test('unique identifier property is named id', async () => {
   expect(id).toBeDefined();
 });
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Dark: The path to light',
+    author: 'Ahmed Khan',
+    url: 'https://www.ahmedcha.com/',
+    likes: 106,
+  };
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+  const titles = blogsAtEnd.map((blog) => blog.title);
+  expect(titles).toContain('Dark: The path to light');
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });

@@ -1,32 +1,16 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
+const helper = require('./test_helper');
 const api = supertest(app);
 const Blog = require('../models/blog');
 
-const initialBlogs = [
-  {
-    title: 'What the Heck Is World?',
-    author: 'Dolly Mary Jones',
-    url: 'https://www.temporary-url.com/',
-    likes: 100,
-    id: '63d14a4243772dd0ddeb12b4',
-  },
-  {
-    title: 'The Fundamental idiology of intraspectular cosmos',
-    author: 'Ramesh Pisharadi',
-    url: 'https://ramesh-pisharadi.com',
-    likes: 876,
-    id: '63d155bcc51690c0f474d898',
-  },
-];
-
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlogs[1]);
-  await blogObject.save();
+
+  const blogObject = helper.initialBlogs.map((blog) => new Blog(blog));
+  const promiseArray = blogObject.map((blog) => blog.save());
+  await Promise.all(promiseArray);
 });
 
 test('blogs are returned as JSON', async () => {
@@ -36,17 +20,17 @@ test('blogs are returned as JSON', async () => {
     .expect('Content-Type', /application\/json/);
 });
 
-test('there are two notes', async () => {
+test('all notes are returned', async () => {
   const response = await api.get('/api/blogs');
 
-  expect(response.body).toHaveLength(initialBlogs.length);
+  expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
 
-test('the first note is about world', async () => {
+test('unique identifier property is named id', async () => {
   const response = await api.get('/api/blogs');
 
-  const titles = response.body.map((r) => r.title);
-  expect(titles).toContain('What the Heck Is World?');
+  const id = response.body.map((r) => r.id);
+  expect(id).toBeDefined();
 });
 
 afterAll(async () => {

@@ -61,10 +61,6 @@ test('blog without likes will be defaulted to zero', async () => {
     url: 'https://www.ramprasad.com/',
   };
 
-  if (!newBlog.hasOwnProperty('likes')) {
-    newBlog.likes = 0;
-  }
-
   await api
     .post('/api/blogs')
     .send(newBlog)

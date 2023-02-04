@@ -8,11 +8,12 @@ const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 const mongoose = require('mongoose');
 
-app.use(
-  middleware.token(
-    ':method :url :status :res[content-length] - :response-time ms :body'
-  )
-);
+if (process.env.NODE_ENV !== 'test')
+  app.use(
+    middleware.token(
+      ':method :url :status :res[content-length] - :response-time ms :body'
+    )
+  );
 
 mongoose.set('strictQuery', false);
 

@@ -54,6 +54,29 @@ test('a valid blog can be added', async () => {
   expect(titles).toContain('Dark: The path to light');
 });
 
+test('blog without likes will be defaulted to zero', async () => {
+  const newBlog = {
+    title: 'Nothing before',
+    author: 'Ram Prasad',
+    url: 'https://www.ramprasad.com/',
+  };
+
+  if (!newBlog.hasOwnProperty('likes')) {
+    newBlog.likes = 0;
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  const blog = blogsAtEnd.find((blog) => blog.title.includes('Nothing before'));
+
+  expect(blog.likes).toEqual(0);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });

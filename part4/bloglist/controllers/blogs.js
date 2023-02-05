@@ -1,6 +1,6 @@
 const blogsRouter = require('express').Router();
 const { isValidObjectId } = require('mongoose');
-const { response } = require('../app');
+const { response, request } = require('../app');
 const Blog = require('../models/blog');
 
 blogsRouter.get('/', async (request, response) => {
@@ -33,6 +33,20 @@ blogsRouter.post('/', async (request, response) => {
 
   const savedBlog = await blog.save();
   response.status(201).json(savedBlog);
+});
+
+blogsRouter.put('/:id', async (request, response) => {
+  const body = request.body;
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+  };
+
+  await Blog.findByIdAndUpdate(request.params.id, blog, { new: true });
+  response.json(blog);
 });
 
 blogsRouter.delete('/:id', async (request, response) => {

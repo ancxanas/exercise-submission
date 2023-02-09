@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router();
 const { isValidObjectId } = require('mongoose');
-const { response, request } = require('../app');
 const Blog = require('../models/blog');
 
 blogsRouter.get('/', async (request, response) => {

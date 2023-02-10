@@ -203,6 +203,72 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);
   });
+
+  test('creation fails with statuscode 400 if username is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'sh',
+      name: 'Shabab Rahman',
+      password: '######',
+    };
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body.error).toContain(
+      `\`username\` (\`${newUser.username}\`) is shorter than the minimum allowed length (3)`
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test('creation fails with statuscode 400 if password is invalid', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'shabab',
+      name: 'Shabab Rahman',
+    };
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body.error).toContain('password is required');
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test('creation fails with statuscode 400 if password is less than 2 characters', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'shabab',
+      name: 'Shabab Rahman',
+      password: '##',
+    };
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body.error).toContain(
+      'password must be at least 3 characters long'
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
 });
 
 afterAll(async () => {

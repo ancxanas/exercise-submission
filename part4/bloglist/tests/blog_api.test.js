@@ -51,6 +51,7 @@ describe('addition of a new blog', () => {
       author: 'Ahmed Khan',
       url: 'https://www.ahmedcha.com/',
       likes: 106,
+      userId: '63e6204d1d998fdc9e0b9bce',
     };
 
     await api

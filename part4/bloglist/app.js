@@ -10,7 +10,7 @@ const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 const mongoose = require('mongoose');
 
-if (process.env.NODE_ENV !== 'test')
+if (process.env.NODE_ENV === 'development')
   app.use(
     middleware.token(
       ':method :url :status :res[content-length] - :response-time ms :body'

@@ -3,6 +3,17 @@ const morgan = require('morgan');
 
 const token = morgan.token('body', (request) => JSON.stringify(request.body));
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return (request.token = authorization.replace('Bearer ', ''));
+  }
+
+  return null;
+
+  next();
+};
+
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'unknown endpoint' });
 };
@@ -25,4 +36,5 @@ module.exports = {
   token,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 };

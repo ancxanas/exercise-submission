@@ -3,6 +3,7 @@ const { isValidObjectId } = require('mongoose');
 const Blog = require('../models/blog');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const tokenExtractor = require('../utils/middleware').tokenExtractor;
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -25,19 +26,11 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 });
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization');
-  if (authorization && authorization.startsWith('Bearer ')) {
-    console.log(authorization.replace('Bearer ', ''));
-    return authorization.replace('Bearer ', '');
-  }
-  return null;
-};
-
 blogsRouter.post('/', async (request, response) => {
   const body = request.body;
+  tokenExtractor(request);
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' });
   }

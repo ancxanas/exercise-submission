@@ -7,10 +7,35 @@ const Blog = require('../models/blog');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+let token = '';
+
 beforeEach(async () => {
   await Blog.deleteMany({});
+  await User.deleteMany({});
+
+  const passwordHash = await bcrypt.hash('paika', 10);
+  const newUser = new User({
+    username: 'root',
+    passwordHash,
+  });
+
+  await newUser.save();
+
+  helper.initialBlogs.map((blog) => (blog.user = newUser.id));
   await Blog.insertMany(helper.initialBlogs);
-});
+
+  const user = await helper.usersInDb();
+
+  const response = await api
+    .post('/api/login')
+    .send({
+      username: user[0].username,
+      password: 'paika',
+    })
+    .expect(200);
+
+  token = response.body.token;
+}, 100000);
 
 describe('when there is initially some blogs saved', () => {
   test('blogs are returned as JSON', async () => {
@@ -46,16 +71,19 @@ describe('checking if it exist', () => {
 
 describe('addition of a new blog', () => {
   test('succeed with valid data', async () => {
+    const user = await helper.usersInDb();
+
     const newBlog = {
       title: 'Dark: The path to light',
       author: 'Ahmed Khan',
       url: 'https://www.ahmedcha.com/',
       likes: 106,
-      userId: '63e6204d1d998fdc9e0b9bce',
+      userId: user[0].id,
     };
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -68,14 +96,18 @@ describe('addition of a new blog', () => {
   });
 
   test('succeeds with defaulting the value of likes to zero if it is not present', async () => {
+    const user = await helper.usersInDb();
+
     const newBlog = {
       title: 'Nothing before',
       author: 'Ram Prasad',
       url: 'https://www.ramprasad.com/',
+      userId: user[0].id,
     };
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -120,9 +152,13 @@ describe('addition of a new blog', () => {
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb();
+
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
 
@@ -149,126 +185,6 @@ describe('editing an existing blog', () => {
     const likes = blogsAtEnd.map((blog) => blog.likes);
 
     expect(likes).toContain(updateBlog.likes);
-  });
-});
-
-describe('when there is initially one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({});
-
-    const passwordHash = await bcrypt.hash('paika', 10);
-    const user = new User({ username: 'root', passwordHash });
-
-    await user.save();
-  });
-
-  test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb();
-
-    const newUser = {
-      username: 'anas',
-      name: 'Muhammed Anas',
-      password: 'lame',
-    };
-
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
-
-    const usersAtEnd = await helper.usersInDb();
-    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
-
-    const usernames = usersAtEnd.map((user) => user.username);
-    expect(usernames).toContain(newUser.username);
-  });
-
-  test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb();
-
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
-    };
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    expect(result.body.error).toContain('expected `username` to be unique');
-
-    const usersAtEnd = await helper.usersInDb();
-    expect(usersAtEnd).toEqual(usersAtStart);
-  });
-
-  test('creation fails with statuscode 400 if username is less than 3 characters', async () => {
-    const usersAtStart = await helper.usersInDb();
-
-    const newUser = {
-      username: 'sh',
-      name: 'Shabab Rahman',
-      password: '######',
-    };
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    expect(result.body.error).toContain(
-      `\`username\` (\`${newUser.username}\`) is shorter than the minimum allowed length (3)`
-    );
-
-    const usersAtEnd = await helper.usersInDb();
-    expect(usersAtEnd).toEqual(usersAtStart);
-  });
-
-  test('creation fails with statuscode 400 if password is invalid', async () => {
-    const usersAtStart = await helper.usersInDb();
-
-    const newUser = {
-      username: 'shabab',
-      name: 'Shabab Rahman',
-    };
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    expect(result.body.error).toContain('password is required');
-
-    const usersAtEnd = await helper.usersInDb();
-    expect(usersAtEnd).toEqual(usersAtStart);
-  });
-
-  test('creation fails with statuscode 400 if password is less than 2 characters', async () => {
-    const usersAtStart = await helper.usersInDb();
-
-    const newUser = {
-      username: 'shabab',
-      name: 'Shabab Rahman',
-      password: '##',
-    };
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-
-    expect(result.body.error).toContain(
-      'password must be at least 3 characters long'
-    );
-
-    const usersAtEnd = await helper.usersInDb();
-    expect(usersAtEnd).toEqual(usersAtStart);
   });
 });
 

@@ -95,6 +95,23 @@ describe('addition of a new blog', () => {
     expect(titles).toContain('Dark: The path to light');
   });
 
+  test('creation fails with statuscode 401 if token is not provided', async () => {
+    const user = await helper.usersInDb();
+
+    const newBlog = {
+      title: 'Dark: The path to light',
+      author: 'Ahmed Khan',
+      url: 'https://www.ahmedcha.com/',
+      likes: 106,
+      userId: user[0].id,
+    };
+
+    await api.post('/api/blogs').send(newBlog).expect(401);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+  });
+
   test('succeeds with defaulting the value of likes to zero if it is not present', async () => {
     const user = await helper.usersInDb();
 
@@ -127,7 +144,11 @@ describe('addition of a new blog', () => {
       likes: 90,
     };
 
-    await api.post('/api/blogs').send(newBlog).expect(400);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400);
 
     const blogsAtEnd = await helper.blogsInDb();
 
@@ -141,7 +162,11 @@ describe('addition of a new blog', () => {
       likes: 90,
     };
 
-    await api.post('/api/blogs').send(newBlog).expect(400);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400);
 
     const blogsAtEnd = await helper.blogsInDb();
 

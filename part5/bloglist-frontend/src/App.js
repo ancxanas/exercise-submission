@@ -1,49 +1,62 @@
 import { useState, useEffect } from 'react';
-import Blog from './components/Blog';
 import blogService from './services/blogs';
+import loginService from './services/login';
+import LoginForm from './components/LoginForm';
+import BlogList from './components/BlogList';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
+
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      });
+      setUser(user);
+      setUsername('');
+      setPassword('');
+    } catch (exception) {
+      console.log('Wrong Credential');
+    }
   };
+
+  const loginForm = () => (
+    <LoginForm
+      handleLogin={handleLogin}
+      username={username}
+      password={password}
+      setUsername={setUsername}
+      setPassword={setPassword}
+    />
+  );
+
+  const bloglist = () => <BlogList blogs={blogs} />;
 
   return (
     <>
-      <form onSubmit={handleLogin}>
+      {!user && (
         <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <h2>Log in to application</h2>
+          {loginForm()}
         </div>
+      )}
+      {user && (
         <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          <h2>blogs</h2>
+          <p> {user.name} logged in</p>
+          {bloglist()}
         </div>
-        <button type="submit">login</button>
-      </form>
-      <div>
-        <h2>blogs</h2>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
-      </div>
+      )}
     </>
   );
 };

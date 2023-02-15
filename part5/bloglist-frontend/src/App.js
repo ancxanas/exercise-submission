@@ -3,6 +3,7 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
+import AddBlogForm from './components/AddBlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,7 +13,8 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -41,7 +43,8 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (exception) {
-      console.log('Wrong Credential');
+      setErrorMessage('wrong username or password');
+      setTimeout(() => setErrorMessage(null), 5000);
     }
   };
 
@@ -61,12 +64,33 @@ const App = () => {
 
     blogService
       .create(blogObject)
-      .then((returnedBlog) => setBlogs(blogs.concat(returnedBlog)));
-
-    // setTitle('');
-    // setAuthor('');
-    // setUrl('');
+      .then((returnedBlog) => {
+        setBlogs(blogs.concat(returnedBlog));
+        setSuccessMessage(
+          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+        );
+        setTimeout(() => setSuccessMessage(null), 5000);
+        setTitle('');
+        setAuthor('');
+        setUrl('');
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => setErrorMessage(null), 5000);
+      });
   };
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null;
+    }
+
+    return (
+      <div className={successMessage ? 'success' : 'error'}>{message}</div>
+    );
+  };
+
+  const blogList = () => <BlogList blogs={blogs} />;
 
   const loginForm = () => (
     <LoginForm
@@ -78,57 +102,37 @@ const App = () => {
     />
   );
 
-  const blogList = () => <BlogList blogs={blogs} />;
+  const addBlogForm = () => (
+    <AddBlogForm
+      addBlog={addBlog}
+      title={title}
+      author={author}
+      url={url}
+      setTitle={setTitle}
+      setAuthor={setAuthor}
+      setUrl={setUrl}
+    />
+  );
 
   return (
     <>
       {!user && (
         <div>
           <h2>Log in to application</h2>
+          <Notification message={errorMessage} />
           {loginForm()}
         </div>
       )}
       {user && (
         <>
           <h2>blogs</h2>
+          <Notification message={successMessage || errorMessage} />
           <div style={{ marginBottom: '20px' }}>
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
           </div>
           {blogList()}
-          <div>
-            <h2>create new</h2>
-            <form onSubmit={addBlog}>
-              <div>
-                title:
-                <input
-                  type="text"
-                  value={title}
-                  name="title"
-                  onChange={({ target }) => setTitle(target.value)}
-                />
-              </div>
-              <div>
-                author:
-                <input
-                  type="text"
-                  value={author}
-                  name="author"
-                  onChange={({ target }) => setAuthor(target.value)}
-                />
-              </div>
-              <div>
-                url:{' '}
-                <input
-                  type="url"
-                  value={url}
-                  name="url"
-                  onChange={({ target }) => setUrl(target.value)}
-                />
-              </div>
-              <button type="submit">create</button>
-            </form>
-          </div>
+          {addBlogForm()}
         </>
       )}
     </>

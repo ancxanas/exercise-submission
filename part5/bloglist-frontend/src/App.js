@@ -7,11 +7,10 @@ import AddBlogForm from './components/AddBlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -25,20 +24,13 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async (userObject) => {
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
+      const user = await loginService.login(userObject);
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setUsername('');
-      setPassword('');
     } catch (exception) {
       setErrorMessage('wrong username or password');
       setTimeout(() => setErrorMessage(null), 5000);
@@ -76,25 +68,13 @@ const App = () => {
     );
   };
 
-  const blogList = () => <BlogList blogs={blogs} />;
-
-  const loginForm = () => (
-    <LoginForm
-      handleLogin={handleLogin}
-      username={username}
-      password={password}
-      setUsername={setUsername}
-      setPassword={setPassword}
-    />
-  );
-
   return (
     <>
       {!user && (
         <div>
           <h2>Log in to application</h2>
           <Notification message={errorMessage} />
-          {loginForm()}
+          <LoginForm userLogin={handleSubmit} />
         </div>
       )}
       {user && (
@@ -105,8 +85,8 @@ const App = () => {
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
           </div>
-          {<AddBlogForm createBlog={addBlog} />}
-          {blogList()}
+          <AddBlogForm createBlog={addBlog} />
+          <BlogList blogs={blogs} />
         </>
       )}
     </>

@@ -10,9 +10,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   useEffect(() => {
@@ -53,15 +50,7 @@ const App = () => {
     setUser('');
   };
 
-  const addBlog = (event) => {
-    event.preventDefault();
-
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    };
-
+  const addBlog = (blogObject) => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
@@ -70,9 +59,6 @@ const App = () => {
           `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
         );
         setTimeout(() => setSuccessMessage(null), 5000);
-        setTitle('');
-        setAuthor('');
-        setUrl('');
       })
       .catch((error) => {
         setErrorMessage(error.response.data.error);
@@ -102,18 +88,6 @@ const App = () => {
     />
   );
 
-  const addBlogForm = () => (
-    <AddBlogForm
-      addBlog={addBlog}
-      title={title}
-      author={author}
-      url={url}
-      setTitle={setTitle}
-      setAuthor={setAuthor}
-      setUrl={setUrl}
-    />
-  );
-
   return (
     <>
       {!user && (
@@ -131,8 +105,8 @@ const App = () => {
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
           </div>
+          {<AddBlogForm createBlog={addBlog} />}
           {blogList()}
-          {addBlogForm()}
         </>
       )}
     </>

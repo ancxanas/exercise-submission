@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
 import AddBlogForm from './components/AddBlogForm';
 import Togglable from './components/Togglable';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -62,34 +63,30 @@ const App = () => {
       });
   };
 
-  const Notification = ({ message }) => {
-    if (message === null) {
-      return null;
-    }
-
-    return (
-      <div className={successMessage ? 'success' : 'error'}>{message}</div>
-    );
-  };
-
   return (
     <>
       {!user && (
         <div>
           <h2>Log in to application</h2>
-          <Notification message={errorMessage} />
+          <Notification
+            message={errorMessage}
+            successMessage={successMessage}
+          />
           <LoginForm userLogin={handleSubmit} />
         </div>
       )}
       {user && (
         <>
           <h2>blogs</h2>
-          <Notification message={successMessage || errorMessage} />
+          <Notification
+            message={successMessage || errorMessage}
+            successMessage={successMessage}
+          />
           <div style={{ marginBottom: '20px' }}>
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>
           </div>
-          <Togglable buttonLabel="new note" ref={blogFormRef}>
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <AddBlogForm createBlog={addBlog} />
           </Togglable>
           <BlogList blogs={blogs} />

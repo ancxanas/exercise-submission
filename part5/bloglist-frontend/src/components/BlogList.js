@@ -1,4 +1,4 @@
-import Blog from './Blog';
+import Blog from './Blog'
 
 const BlogList = ({ blogs, user, updatedBlog, removeBlog }) => {
   return (
@@ -13,7 +13,7 @@ const BlogList = ({ blogs, user, updatedBlog, removeBlog }) => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default BlogList;
+export default BlogList

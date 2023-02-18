@@ -75,6 +75,11 @@ const App = () => {
     );
   };
 
+  const handleDeleteBlog = async (blogObject) => {
+    await blogService.remove(blogObject.id);
+    setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id));
+  };
+
   return (
     <>
       {!user && (
@@ -101,7 +106,12 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <AddBlogForm createBlog={addBlog} />
           </Togglable>
-          <BlogList blogs={blogs} updatedObject={handleIncrementLike} />
+          <BlogList
+            blogs={blogs}
+            user={user}
+            updatedBlog={handleIncrementLike}
+            removeBlog={handleDeleteBlog}
+          />
         </>
       )}
     </>

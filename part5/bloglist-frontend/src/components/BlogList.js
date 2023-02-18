@@ -1,10 +1,16 @@
 import Blog from './Blog';
 
-const BlogList = ({ blogs, updatedObject }) => {
+const BlogList = ({ blogs, user, updatedBlog, removeBlog }) => {
   return (
     <div>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updatedLike={updatedObject} />
+        <Blog
+          key={blog.id}
+          user={user}
+          blog={blog}
+          updatedLike={updatedBlog}
+          deleteBlog={removeBlog}
+        />
       ))}
     </div>
   );

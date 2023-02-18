@@ -63,6 +63,14 @@ const App = () => {
       });
   };
 
+  const handleIncrementLike = async (blogObject) => {
+    const updatedBlog = await blogService.update(blogObject.id, blogObject);
+
+    setBlogs(
+      blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+    );
+  };
+
   return (
     <>
       {!user && (
@@ -89,7 +97,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <AddBlogForm createBlog={addBlog} />
           </Togglable>
-          <BlogList blogs={blogs} />
+          <BlogList blogs={blogs} updatedObject={handleIncrementLike} />
         </>
       )}
     </>

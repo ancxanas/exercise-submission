@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -10,17 +11,24 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   const incrementLike = () => {
-    updatedLike({ ...blog, likes: (blog.likes += 1) });
-  };
+    updatedLike({ ...blog, likes: (blog.likes += 1) })
+  }
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog);
+      deleteBlog(blog)
     }
-  };
+  }
+
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    updatedLike: PropTypes.func.isRequired,
+    deleteBlog: PropTypes.func.isRequired,
+  }
 
   return (
     <div style={blogStyle}>
@@ -40,7 +48,7 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

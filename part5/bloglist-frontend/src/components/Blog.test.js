@@ -28,15 +28,15 @@ describe('<Note />', () => {
   test('renders only title and author of the blog by default', () => {
     render(<Blog blog={blog} />)
 
-    const titleAndAuthorElement = screen.getAllByText('Titanic James Cameroon')
-    const likesElement = screen.queryByText('likes 0', { exact: false })
-    const urlElement = screen.queryByText('https://titanic.com/', {
+    const titleAndAuthor = screen.getAllByText('Titanic James Cameroon')
+    const likes = screen.queryByText('likes 0', { exact: false })
+    const url = screen.queryByText('https://titanic.com/', {
       exact: false,
     })
 
-    expect(titleAndAuthorElement).toBeDefined()
-    expect(likesElement).toBeNull()
-    expect(urlElement).toBeNull()
+    expect(titleAndAuthor).toBeDefined()
+    expect(likes).toBeNull()
+    expect(url).toBeNull()
   })
 
   test('renders likes and url of the blog when view is pressed', async () => {
@@ -46,14 +46,14 @@ describe('<Note />', () => {
     const button = screen.getByText('view')
     await user.click(button)
 
-    const likeElement = screen.getByText('likes 0')
-    const urlElement = screen.getByText('https://titanic.com/')
+    const likes = screen.getByText('likes 0')
+    const url = screen.getByText('https://titanic.com/')
 
-    expect(likeElement).toBeDefined()
-    expect(urlElement).toBeDefined()
+    expect(likes).toBeDefined()
+    expect(url).toBeDefined()
   })
 
-  test('clicking like button twice triggers the event handler twice', async () => {
+  test('clicking like button twice triggers the event handler the component received as props called twice', async () => {
     const updatedLike = jest.fn()
 
     render(<Blog blog={blog} user={userObject} updatedLike={updatedLike} />)

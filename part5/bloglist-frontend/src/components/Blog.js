@@ -31,7 +31,7 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blogDiv">
       {blog.title} {blog.author}
       <button onClick={() => setShow(!show)}>{show ? 'hide' : 'view'}</button>
       {show && (

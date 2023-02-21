@@ -25,17 +25,31 @@ test('renders only title and author of the blog by default', () => {
   expect(urlElement).toBeNull()
 })
 
-test('renders url and likes of the blog when view button is clicked', async () => {
+test('renders likes and url of the blog when view is pressed', async () => {
   const blog = {
     title: 'Titanic',
     author: 'James Cameroon',
     likes: 0,
     url: 'https://titanic.com/',
+    user: {
+      name: 'James',
+      username: 'james',
+    },
   }
 
-  render(<Blog blog={blog} />)
+  const userObject = {
+    username: 'james',
+  }
+
+  render(<Blog blog={blog} user={userObject} />)
 
   const user = userEvent.setup()
   const button = screen.getByText('view')
   await user.click(button)
+
+  const likeElement = screen.getByText('likes 0')
+  const urlElement = screen.getByText('https://titanic.com/')
+
+  expect(likeElement).toBeDefined()
+  expect(urlElement).toBeDefined()
 })

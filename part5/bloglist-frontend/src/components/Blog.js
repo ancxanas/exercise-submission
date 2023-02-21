@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
   const [show, setShow] = useState(false)
@@ -23,19 +22,14 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
     }
   }
 
-  Blog.propTypes = {
-    blog: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    updatedLike: PropTypes.func.isRequired,
-    deleteBlog: PropTypes.func.isRequired,
-  }
-
   return (
-    <div style={blogStyle} className="blogDiv">
+    <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={() => setShow(!show)}>{show ? 'hide' : 'view'}</button>
+      <button className="viewButton" onClick={() => setShow(!show)}>
+        {show ? 'hide' : 'view'}
+      </button>
       {show && (
-        <>
+        <div className="viewDiv">
           <div>{blog.url}</div>
           <div>
             likes {blog.likes}
@@ -45,7 +39,7 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
           {blog.user.username === user.username ? (
             <button onClick={handleRemove}>remove</button>
           ) : null}
-        </>
+        </div>
       )}
     </div>
   )

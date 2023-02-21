@@ -1,9 +1,10 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { screen, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('renders only title and author of the blog', () => {
+test('renders only title and author of the blog by default', () => {
   const blog = {
     title: 'Titanic',
     author: 'James Cameroon',
@@ -22,4 +23,19 @@ test('renders only title and author of the blog', () => {
   expect(titleAndAuthorElement).toBeDefined()
   expect(likesElement).toBeNull()
   expect(urlElement).toBeNull()
+})
+
+test('renders url and likes of the blog when view button is clicked', async () => {
+  const blog = {
+    title: 'Titanic',
+    author: 'James Cameroon',
+    likes: 0,
+    url: 'https://titanic.com/',
+  }
+
+  render(<Blog blog={blog} />)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
 })

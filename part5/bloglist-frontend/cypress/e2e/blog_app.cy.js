@@ -43,7 +43,7 @@ describe('Blog app', () => {
         cy.login({ username: 'anas', password: 'paika' })
       })
 
-      it.only('A blog can be created', function () {
+      it('A blog can be created', function () {
         cy.contains('new blog').click()
         cy.get('#title').type('Harry Potter')
         cy.get('#author').type('J. K. Rowling')
@@ -58,6 +58,23 @@ describe('Blog app', () => {
           .and('have.css', 'border-style', 'solid')
 
         cy.get('#blog').should('contain', 'Harry Potter')
+      })
+
+      describe('and a blog exists', function () {
+        beforeEach(function () {
+          cy.createBlog({
+            title: 'Harry Potter',
+            author: 'J. K. Rowling',
+            url: 'https://www.wizardingworld.com/discover/books/harry-potter-and-the-philosophers-stone',
+          })
+        })
+
+        it.only('blog can be liked', function () {
+          cy.contains('view').click()
+          cy.contains('like').click()
+
+          cy.contains('likes').should('have.length', '1')
+        })
       })
     })
   })

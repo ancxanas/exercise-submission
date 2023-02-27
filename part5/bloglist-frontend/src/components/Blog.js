@@ -23,12 +23,14 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div id="blog" style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={() => setShow(!show)}>{show ? 'hide' : 'view'}</button>
       {show && (
         <div>
-          <div>{blog.url}</div>
+          <div>
+            <a href={blog.url}>{blog.url}</a>
+          </div>
           <div>
             likes {blog.likes}
             <button onClick={incrementLike}>like</button>

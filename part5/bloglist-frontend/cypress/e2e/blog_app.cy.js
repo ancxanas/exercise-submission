@@ -37,5 +37,28 @@ describe('Blog app', () => {
 
       cy.get('html').should('not.contain', 'Muhammed Anas logged in')
     })
+
+    describe('when logged in', function () {
+      beforeEach(function () {
+        cy.login({ username: 'anas', password: 'paika' })
+      })
+
+      it.only('A blog can be created', function () {
+        cy.contains('new blog').click()
+        cy.get('#title').type('Harry Potter')
+        cy.get('#author').type('J. K. Rowling')
+        cy.get('#url').type(
+          'https://www.wizardingworld.com/discover/books/harry-potter-and-the-philosophers-stone'
+        )
+        cy.get('#create-button').click()
+
+        cy.get('.success')
+          .should('contain', 'Harry Potter by J. K. Rowling')
+          .and('have.css', 'color', 'rgb(0, 128, 0)')
+          .and('have.css', 'border-style', 'solid')
+
+        cy.get('#blog').should('contain', 'Harry Potter')
+      })
+    })
   })
 })

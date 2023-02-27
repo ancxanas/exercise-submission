@@ -63,7 +63,7 @@ describe('Blog app', () => {
         cy.get('.blog').should('contain', 'Harry Potter')
       })
 
-      describe('and some blog exists', function () {
+      describe('and some blogs exists', function () {
         beforeEach(function () {
           cy.createBlog({
             title: 'Harry Potter',
@@ -75,6 +75,11 @@ describe('Blog app', () => {
             author: 'J. R. R. Tolkien',
             url: 'https://www.warnerbros.com/movies/lord-rings-fellowship-ring',
           })
+          cy.createBlog({
+            title: 'Hunger Games',
+            author: 'Suzanne Collins',
+            url: 'https://www.lionsgate.com/franchises/the-hunger-games',
+          })
         })
 
         it('blog can be liked', function () {
@@ -84,7 +89,29 @@ describe('Blog app', () => {
           cy.contains('likes').should('have.length', '1')
         })
 
-        it.only('blog can be deleted', function () {
+        it('blogs are ordered according to likes', function () {
+          cy.get('.blog').each(($ele) => {
+            cy.wrap($ele).find('button').contains('view').click()
+          })
+
+          const likingBlogs = (title, noOfLikes) => {
+            cy.get('.blog').then(() => {
+              for (let n = 0; n < noOfLikes; n++) {
+                cy.contains(title).find('button').contains('like').click()
+              }
+            })
+          }
+
+          likingBlogs('Harry Potter', 10)
+          likingBlogs('Lord of the Rings', 30)
+          likingBlogs('Hunger Games', 20)
+
+          cy.get('.blog').eq(0).should('contain', 'Lord of the Rings')
+          cy.get('.blog').eq(1).should('contain', 'Hunger Games')
+          cy.get('.blog').eq(2).should('contain', 'Harry Potter')
+        })
+
+        it('blog can be deleted', function () {
           cy.contains('Lord of the Rings').as('Blog').contains('view').click()
           cy.get('@Blog').contains('remove').click()
 

@@ -1,3 +1,12 @@
+Cypress.Commands.add('createUser', ({ name, username, password }) => {
+  cy.request('POST', `${Cypress.env('BACKEND')}/users`, {
+    name,
+    username,
+    password,
+  })
+  cy.visit('')
+})
+
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', `${Cypress.env('BACKEND')}/login`, {
     username,

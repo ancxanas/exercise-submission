@@ -2,7 +2,7 @@ import deepFreeze from 'deep-freeze'
 import counterReducer from './reducer'
 
 describe('unicafe reducer', () => {
-  const initialState = {
+  let initialState = {
     good: 0,
     ok: 0,
     bad: 0,
@@ -64,6 +64,12 @@ describe('unicafe reducer', () => {
   })
 
   test('everything stays at zero', () => {
+    initialState = {
+      good: 10,
+      bad: 6,
+      ok: 7,
+    }
+
     const action = {
       type: 'ZERO',
     }

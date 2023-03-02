@@ -20,6 +20,13 @@ export const createAnecdote = (content) => {
   }
 }
 
+export const voteAnecdote = (id) => {
+  return {
+    type: 'VOTE',
+    payload: { id },
+  }
+}
+
 const asObject = (anecdote) => {
   return {
     content: anecdote,

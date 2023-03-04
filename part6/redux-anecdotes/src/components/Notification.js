@@ -10,7 +10,7 @@ const Notification = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(hideNotification())
-    }, 3000)
+    }, 5000)
     return () => clearTimeout(timer)
   })
 

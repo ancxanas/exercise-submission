@@ -2,7 +2,7 @@ import anecdoteReducer from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
 describe('anecdoteReducer', () => {
-  test('returns new state with action VOTE', () => {
+  test('returns new state with action anecdote/voteAnecdote', () => {
     const state = [
       {
         content: 'If it hurts, do it more often',
@@ -28,7 +28,7 @@ describe('anecdoteReducer', () => {
     })
   })
 
-  test('returns a new state with action NEW_ANECDOTE', () => {
+  test('returns a new state with action anecdote/createAnecdote', () => {
     const state = []
     const action = {
       type: 'NEW_ANECDOTE',

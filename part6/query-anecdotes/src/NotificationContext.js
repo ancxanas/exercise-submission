@@ -4,12 +4,21 @@ const notificationReducer = (state, action) => {
   switch (action.type) {
     case 'NEW_ANECDOTE':
       return `anecdote '${action.payload}' added`
-    case 'VOTE':
+    case 'VOTE_ANECDOTE':
       return `anecdote '${action.payload}' voted`
+    case 'CREATE_ANECDOTE_ERROR':
+      return action.payload
     case 'NULL':
       return null
     default:
       return state
+  }
+}
+
+export const createAnecdoteError = (error) => {
+  return {
+    type: 'CREATE_ANECDOTE_ERROR',
+    payload: error,
   }
 }
 
@@ -22,7 +31,7 @@ export const newAnecdoteNotification = (anecdote) => {
 
 export const voteAnecdoteNotification = (anecdote) => {
   return {
-    type: 'VOTE',
+    type: 'VOTE_ANECDOTE',
     payload: anecdote.content,
   }
 }

@@ -12,7 +12,7 @@ const App = () => {
   console.log(result)
 
   if (result.isLoading) {
-    return <div>...isLoading</div>
+    return <div>loading data...</div>
   } else if (result.isError) {
     return <div>anecdote service not available due to problems in server</div>
   }

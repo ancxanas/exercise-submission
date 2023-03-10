@@ -1,16 +1,11 @@
 import { useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Link,
-  Routes,
-  Route,
-  useMatch,
-} from 'react-router-dom'
+import { Link, Routes, Route, useMatch, useNavigate } from 'react-router-dom'
 
-const Menu = ({ anecdotes, anecdote }) => {
+const Menu = ({ anecdotes, anecdote, handleNewAnecdote, notification }) => {
   const padding = {
     paddingRight: 5,
   }
+
   return (
     <div>
       <Link style={padding} to="/">
@@ -23,13 +18,18 @@ const Menu = ({ anecdotes, anecdote }) => {
         about
       </Link>
 
+      <Notification notification={notification} />
+
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route
           path="/anecdotes/:id"
           element={<Anecdote anecdote={anecdote} />}
         />
-        <Route path="/create" element={<CreateNew />} />
+        <Route
+          path="/create"
+          element={<CreateNew addNew={handleNewAnecdote} />}
+        />
         <Route path="/about" element={<About />} />
       </Routes>
     </div>
@@ -145,7 +145,15 @@ const CreateNew = (props) => {
   )
 }
 
+const Notification = ({ notification }) => {
+  if (!notification) return null
+
+  return <div>{notification}</div>
+}
+
 const App = () => {
+  const navigate = useNavigate()
+
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -163,7 +171,7 @@ const App = () => {
     },
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
 
   const match = useMatch('/anecdotes/:id')
   const anecdote = match
@@ -173,6 +181,11 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote ${anecdote.content} created!`)
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+    navigate('/')
   }
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id)
@@ -191,7 +204,12 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} anecdote={anecdote} />
+      <Menu
+        anecdotes={anecdotes}
+        anecdote={anecdote}
+        handleNewAnecdote={addNew}
+        notification={notification}
+      />
       <Footer />
     </div>
   )

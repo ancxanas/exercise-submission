@@ -6,12 +6,14 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -36,8 +38,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-      setErrorMessage('wrong username or password')
-      setTimeout(() => setErrorMessage(null), 5000)
+      dispatch(setNotification('wrong username or password'))
     }
   }
 
@@ -50,19 +51,10 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(
-          `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
-        )
-        setTimeout(() => setSuccessMessage(null), 5000)
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data.error)
-        setTimeout(() => setErrorMessage(null), 5000)
-      })
+    blogService.create(blogObject).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog))
+    })
+    dispatch(setNotification(`you added '${blogObject.title}'`))
   }
 
   const handleIncrementLike = async (blogObject) => {
@@ -73,11 +65,13 @@ const App = () => {
         .map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
         .sort((blogA, blogB) => blogB.likes - blogA.likes)
     )
+    dispatch(setNotification(`you liked ${updatedBlog.title}`))
   }
 
   const handleDeleteBlog = async (blogObject) => {
     await blogService.remove(blogObject.id)
     setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id))
+    dispatch(setNotification(`you deleted ${blogObject.title}`))
   }
 
   return (
@@ -85,20 +79,14 @@ const App = () => {
       {!user && (
         <div>
           <h2>Log in to application</h2>
-          <Notification
-            message={errorMessage}
-            successMessage={successMessage}
-          />
+          <Notification />
           <LoginForm userLogin={handleSubmit} />
         </div>
       )}
       {user && (
         <>
           <h2>blogs</h2>
-          <Notification
-            message={successMessage || errorMessage}
-            successMessage={successMessage}
-          />
+          <Notification />
           <div style={{ marginBottom: '20px' }}>
             {user.name} logged in
             <button onClick={handleLogout}>logout</button>

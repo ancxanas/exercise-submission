@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = ({ blog, user, deleteBlog }) => {
   const dispatch = useDispatch()
@@ -18,6 +19,7 @@ const Blog = ({ blog, user, deleteBlog }) => {
 
   const like = (blog) => {
     dispatch(likeBlog(blog))
+    dispatch(setNotification(`liked the blog '${blog.title}'`))
   }
 
   const handleRemove = () => {

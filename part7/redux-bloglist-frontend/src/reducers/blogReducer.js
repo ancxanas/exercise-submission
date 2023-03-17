@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import blogService from '../services/blogs'
 
 const blogSlice = createSlice({
   name: 'blog',
@@ -17,10 +18,23 @@ const blogSlice = createSlice({
         ...blogToLike,
         likes: blogToLike.likes + 1,
       }
-      return state.map((blog) => (blogToLike.id !== id ? blog : likedBlog))
+      return state
+        .map((blog) => (blog.id !== id ? blog : likedBlog))
+        .sort((blogA, blogB) => blogB.likes - blogA.likes)
     },
   },
 })
 
 export const { appendBlog, setBlogs, incrementLike } = blogSlice.actions
+
+export const likeBlog = (blog) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogService.update(blog.id, {
+      ...blog,
+      likes: blog.likes + 1,
+    })
+    dispatch(incrementLike(updatedBlog))
+  }
+}
+
 export default blogSlice.reducer

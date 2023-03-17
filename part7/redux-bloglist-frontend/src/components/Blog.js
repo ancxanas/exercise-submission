@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
+const Blog = ({ blog, user, deleteBlog }) => {
+  const dispatch = useDispatch()
+
   const [show, setShow] = useState(false)
 
   const blogStyle = {
@@ -12,8 +16,8 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
     marginBottom: 5,
   }
 
-  const incrementLike = () => {
-    updatedLike({ ...blog, likes: (blog.likes += 1) })
+  const like = (blog) => {
+    dispatch(likeBlog(blog))
   }
 
   const handleRemove = () => {
@@ -33,7 +37,7 @@ const Blog = ({ blog, user, updatedLike, deleteBlog }) => {
           </div>
           <div>
             likes {blog.likes}
-            <button onClick={incrementLike}>like</button>
+            <button onClick={() => like(blog)}>like</button>
           </div>
           <div>{blog.user.name}</div>
           {blog.user.username === user.username ? (

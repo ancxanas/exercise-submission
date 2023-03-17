@@ -68,21 +68,6 @@ const App = () => {
       })
   }
 
-  const handleIncrementLike = async (blogObject) => {
-    const updatedBlog = await blogService.update(blogObject.id, blogObject)
-
-    dispatch(
-      setNotification(
-        `blog '${updatedBlog.title}' by ${updatedBlog.author} liked`
-      )
-    )
-    // setBlogs(
-    //   blogs
-    //     .map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
-    //     .sort((blogA, blogB) => blogB.likes - blogA.likes)
-    // )
-  }
-
   const handleDeleteBlog = async (blogObject) => {
     dispatch(
       setNotification(
@@ -113,11 +98,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
-          <BlogList
-            user={user}
-            updatedBlog={handleIncrementLike}
-            removeBlog={handleDeleteBlog}
-          />
+          <BlogList user={user} removeBlog={handleDeleteBlog} />
         </>
       )}
     </>

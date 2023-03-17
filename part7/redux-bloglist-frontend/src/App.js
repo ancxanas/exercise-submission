@@ -56,7 +56,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
-        setBlogs(appendBlog(returnedBlog))
+        dispatch(appendBlog(returnedBlog))
         dispatch(
           setNotification(
             `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`

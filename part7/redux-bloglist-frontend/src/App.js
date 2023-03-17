@@ -8,7 +8,7 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
-import { setBlogs, appendBlog } from './reducers/blogReducer'
+import { appendBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -16,11 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      dispatch(
-        setBlogs(blogs.sort((blogA, blogB) => blogB.likes - blogA.likes))
-      )
-    })
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -68,16 +64,6 @@ const App = () => {
       })
   }
 
-  const handleDeleteBlog = async (blogObject) => {
-    dispatch(
-      setNotification(
-        `blog ${blogObject.title} by ${blogObject.author} deleted`
-      )
-    )
-    await blogService.remove(blogObject.id)
-    // setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id))
-  }
-
   return (
     <>
       {!user && (
@@ -98,7 +84,7 @@ const App = () => {
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
-          <BlogList user={user} removeBlog={handleDeleteBlog} />
+          <BlogList user={user} />
         </>
       )}
     </>

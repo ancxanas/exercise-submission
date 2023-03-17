@@ -6,8 +6,8 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
-import { useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -51,27 +51,44 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
-    })
-    dispatch(setNotification(`you added '${blogObject.title}'`))
+    blogService
+      .create(blogObject)
+      .then((returnedBlog) => {
+        setBlogs(blogs.concat(returnedBlog))
+        dispatch(
+          setNotification(
+            `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+          )
+        )
+      })
+      .catch((error) => {
+        dispatch(setNotification(error.response.data.error))
+      })
   }
 
   const handleIncrementLike = async (blogObject) => {
     const updatedBlog = await blogService.update(blogObject.id, blogObject)
 
+    dispatch(
+      setNotification(
+        `blog '${blogObject.title}' by ${blogObject.author} liked`
+      )
+    )
     setBlogs(
       blogs
         .map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
         .sort((blogA, blogB) => blogB.likes - blogA.likes)
     )
-    dispatch(setNotification(`you liked ${updatedBlog.title}`))
   }
 
   const handleDeleteBlog = async (blogObject) => {
+    dispatch(
+      setNotification(
+        `blog ${blogObject.title} by ${blogObject.author} deleted`
+      )
+    )
     await blogService.remove(blogObject.id)
     setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id))
-    dispatch(setNotification(`you deleted ${blogObject.title}`))
   }
 
   return (

@@ -22,6 +22,10 @@ const blogSlice = createSlice({
         .map((blog) => (blog.id !== id ? blog : likedBlog))
         .sort((blogA, blogB) => blogB.likes - blogA.likes)
     },
+    filterAfterDelete(state, action) {
+      const id = action.payload
+      return state.filter((blog) => blog.id !== id)
+    },
   },
 })
 
@@ -46,9 +50,9 @@ export const likeBlog = (blog) => {
 }
 
 export const deleteBlog = (blog) => {
-  console.log(blog)
-  return async () => {
+  return async (dispatch) => {
     await blogService.remove(blog.id)
+    dispatch(filterAfterDelete(blog.id))
   }
 }
 

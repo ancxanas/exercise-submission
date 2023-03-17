@@ -8,16 +8,18 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
+import { setBlogs, appendBlog } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
-      setBlogs(blogs.sort((blogA, blogB) => blogB.likes - blogA.likes))
+      dispatch(
+        setBlogs(blogs.sort((blogA, blogB) => blogB.likes - blogA.likes))
+      )
     })
   }, [])
 
@@ -54,7 +56,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog))
+        setBlogs(appendBlog(returnedBlog))
         dispatch(
           setNotification(
             `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
@@ -71,14 +73,14 @@ const App = () => {
 
     dispatch(
       setNotification(
-        `blog '${blogObject.title}' by ${blogObject.author} liked`
+        `blog '${updatedBlog.title}' by ${updatedBlog.author} liked`
       )
     )
-    setBlogs(
-      blogs
-        .map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
-        .sort((blogA, blogB) => blogB.likes - blogA.likes)
-    )
+    // setBlogs(
+    //   blogs
+    //     .map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+    //     .sort((blogA, blogB) => blogB.likes - blogA.likes)
+    // )
   }
 
   const handleDeleteBlog = async (blogObject) => {
@@ -88,7 +90,7 @@ const App = () => {
       )
     )
     await blogService.remove(blogObject.id)
-    setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id))
+    // setBlogs(blogs.filter((blogs) => blogs.id !== blogObject.id))
   }
 
   return (
@@ -112,7 +114,6 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Togglable>
           <BlogList
-            blogs={blogs}
             user={user}
             updatedBlog={handleIncrementLike}
             removeBlog={handleDeleteBlog}

@@ -8,7 +8,7 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
-import { appendBlog, initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -47,23 +47,6 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        dispatch(appendBlog(returnedBlog))
-        dispatch(
-          setNotification(
-            `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
-          )
-        )
-      })
-      .catch((error) => {
-        dispatch(setNotification(error.response.data.error))
-      })
-  }
-
   return (
     <>
       {!user && (
@@ -82,7 +65,7 @@ const App = () => {
             <button onClick={handleLogout}>logout</button>
           </div>
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
-            <BlogForm createBlog={addBlog} />
+            <BlogForm blogFormRef={blogFormRef} />
           </Togglable>
           <BlogList user={user} />
         </>

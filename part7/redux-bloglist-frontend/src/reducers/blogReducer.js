@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
+import { setNotification } from './notificationReducer'
 
 const blogSlice = createSlice({
   name: 'blog',
@@ -36,6 +37,17 @@ export const initializeBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll()
     dispatch(setBlogs(blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)))
+  }
+}
+
+export const createBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      const newBlog = await blogService.create(blog)
+      dispatch(appendBlog(newBlog))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error))
+    }
   }
 }
 

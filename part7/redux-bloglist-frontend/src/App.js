@@ -7,7 +7,9 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
-import { getLoggedUser, setUser } from './reducers/loginReducer'
+import { getLoggedUser, userLogout } from './reducers/loginReducer'
+import UsersList from './components/UsersList'
+import { initializeUsers } from './reducers/userReducer'
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -15,6 +17,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(initializeUsers())
     dispatch(initializeBlogs())
     dispatch(getLoggedUser())
   }, [])
@@ -22,11 +25,6 @@ const App = () => {
   useEffect(() => {
     if (user) blogService.setToken(user.token)
   }, [user])
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    dispatch(setUser(''))
-  }
 
   const blogFormRef = useRef()
 
@@ -45,12 +43,14 @@ const App = () => {
           <Notification />
           <div style={{ marginBottom: '20px' }}>
             {user.name} logged in
-            <button onClick={handleLogout}>logout</button>
+            <button onClick={() => dispatch(userLogout())}>logout</button>
           </div>
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <BlogForm blogFormRef={blogFormRef} />
           </Togglable>
           <BlogList user={user} />
+          <h1>Users</h1>
+          <UsersList />
         </>
       )}
     </>

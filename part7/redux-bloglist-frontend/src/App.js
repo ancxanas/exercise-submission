@@ -4,7 +4,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
-import { getLoggedUser, userLogout } from './reducers/loginReducer'
+import { getLoggedUser } from './reducers/loginReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Menu from './components/Menu'
 
@@ -32,17 +32,7 @@ const App = () => {
           <LoginForm />
         </div>
       )}
-      {user && (
-        <>
-          <h2>blogs</h2>
-          <Notification />
-          <div>
-            {user.name} logged in
-            <button onClick={() => dispatch(userLogout())}>logout</button>
-          </div>
-          <Menu />
-        </>
-      )}
+      {user && <Menu />}
     </>
   )
 }

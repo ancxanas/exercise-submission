@@ -3,14 +3,26 @@ import Blogs from './Blogs'
 import Blog from './Blog'
 import User from './User'
 import UsersList from './UsersList'
+import Notification from './Notification'
+import { useSelector, useDispatch } from 'react-redux'
+import { userLogout } from '../reducers/loginReducer'
 
 const Menu = () => {
+  const user = useSelector((state) => state.login)
+
+  const dispatch = useDispatch()
+
   return (
     <>
       <div>
         <Link to="/">blogs</Link>
         <Link to="/users">users</Link>
+        {user.name} logged in
+        <button onClick={() => dispatch(userLogout())}>logout</button>
       </div>
+
+      <h2>blog app</h2>
+      <Notification />
 
       <Routes>
         <Route path="blogs/:id" element={<Blog />} />

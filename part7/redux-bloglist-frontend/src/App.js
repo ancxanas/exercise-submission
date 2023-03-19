@@ -18,9 +18,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
-  }, [])
-
-  useEffect(() => {
     dispatch(getLoggedUser())
   }, [])
 
@@ -31,8 +28,6 @@ const App = () => {
   const handleSubmit = async (userObject) => {
     try {
       const user = await loginService.login(userObject)
-
-      // window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       dispatch(setUser(user))

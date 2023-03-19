@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -7,34 +7,36 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { getLoggedUser, setLoggedUser, setUser } from './reducers/loginReducer'
 
 const App = () => {
-  const dispatch = useDispatch()
+  const user = useSelector((state) => state.login)
 
-  const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
+    dispatch(getLoggedUser())
   }, [])
+
+  useEffect(() => {
+    if (user) blogService.setToken(user.token)
+  }, [user])
 
   const handleSubmit = async (userObject) => {
     try {
       const user = await loginService.login(userObject)
 
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      // window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+
       blogService.setToken(user.token)
-      setUser(user)
+      dispatch(setUser(user))
+      dispatch(setLoggedUser(user))
     } catch (exception) {
       dispatch(setNotification('wrong username or password'))
     }
@@ -42,7 +44,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
-    setUser('')
+    dispatch(setUser(''))
   }
 
   const blogFormRef = useRef()

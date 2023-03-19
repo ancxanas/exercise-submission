@@ -7,8 +7,21 @@ const loginSlice = createSlice({
     setUser(state, action) {
       return action.payload
     },
+    setLoggedUser(state, action) {
+      window.localStorage.setItem(
+        'loggedBlogappUser',
+        JSON.stringify(action.payload)
+      )
+    },
+    getLoggedUser() {
+      const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+      if (loggedUserJSON) {
+        return JSON.parse(loggedUserJSON)
+      }
+    },
   },
 })
 
-export const { setUser } = loginSlice.actions
+export const { setUser, setLoggedUser, getLoggedUser } = loginSlice.actions
+
 export default loginSlice.reducer

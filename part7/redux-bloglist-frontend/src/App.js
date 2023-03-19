@@ -8,8 +8,8 @@ import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { getLoggedUser, userLogout } from './reducers/loginReducer'
-import UsersList from './components/UsersList'
 import { initializeUsers } from './reducers/userReducer'
+import Menu from './components/Menu'
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -45,12 +45,11 @@ const App = () => {
             {user.name} logged in
             <button onClick={() => dispatch(userLogout())}>logout</button>
           </div>
+          <Menu />
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <BlogForm blogFormRef={blogFormRef} />
           </Togglable>
           <BlogList user={user} />
-          <h1>Users</h1>
-          <UsersList />
         </>
       )}
     </>

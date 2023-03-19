@@ -1,8 +1,3 @@
-const User = ({ user }) => (
-  <tr>
-    <td>{user.name}</td>
-    <td>{user.blogs.length}</td>
-  </tr>
-)
+const User = () => <div>Hello World</div>
 
 export default User

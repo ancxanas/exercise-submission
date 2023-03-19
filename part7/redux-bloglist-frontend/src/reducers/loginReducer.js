@@ -41,4 +41,11 @@ export const userLogin = (userObject) => {
   }
 }
 
+export const userLogout = () => {
+  return (dispatch) => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    dispatch(setUser(''))
+  }
+}
+
 export default loginSlice.reducer

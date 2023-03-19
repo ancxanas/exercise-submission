@@ -1,16 +1,23 @@
 import { useSelector } from 'react-redux'
+import User from './User'
 
 const UsersList = () => {
   const users = useSelector((state) => state.user)
-  console.log(users)
 
   return (
-    <div>hello</div>
-    // <ul>
-    //   {users.map((user) => (
-    //     <li key={user.id}>{user.name}</li>
-    //   ))}
-    // </ul>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>blogs created</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((user) => (
+          <User key={user.id} user={user} />
+        ))}
+      </tbody>
+    </table>
   )
 }
 

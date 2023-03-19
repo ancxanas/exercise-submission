@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 const UsersList = () => {
   const users = useSelector((state) => state.user)
-  console.log(users)
 
   return (
     <>

@@ -63,8 +63,8 @@ export const likeBlog = (blog) => {
 
 export const deleteBlog = (blog) => {
   return async (dispatch) => {
-    await blogService.remove(blog.id)
     dispatch(filterAfterDelete(blog.id))
+    await blogService.remove(blog.id)
   }
 }
 

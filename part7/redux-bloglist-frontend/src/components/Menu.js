@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from 'react-router-dom'
-import Blogs from '../components/Blogs'
+import Blogs from './Blogs'
+import Blog from './Blog'
 import User from './User'
 import UsersList from './UsersList'
 
@@ -12,7 +13,7 @@ const Menu = () => {
       </div>
 
       <Routes>
-        <Route path="blogs/:id" />
+        <Route path="blogs/:id" element={<Blog />} />
         <Route path="/users/:id" element={<User />} />
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<UsersList />} />

@@ -12,6 +12,7 @@ const Menu = () => {
       </div>
 
       <Routes>
+        <Route path="blogs/:id" />
         <Route path="/users/:id" element={<User />} />
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<UsersList />} />

@@ -1,10 +1,31 @@
 const blogsRouter = require('express').Router()
 const { isValidObjectId } = require('mongoose')
 const Blog = require('../models/blog')
+const Comment = require('../models/comment')
 const userExtractor = require('../utils/middleware').userExtractor
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { content } = request.body
+
+  const blog = await Blog.findById(request.params.id)
+
+  const comment = new Comment({
+    content,
+    blog: blog.id,
+  })
+
+  const savedComment = await comment.save()
+  blog.comments = blog.comments.concat(savedComment._id)
+  await blog.save()
+
+  response.status(201).json(savedComment)
+})
+
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { content: 1, id: 1 })
+
   response.json(blogs)
 })
 
@@ -13,10 +34,13 @@ blogsRouter.get('/:id', async (request, response) => {
     return response.status(400).end()
   }
 
-  const blog = await Blog.findById(request.params.id).populate('user', {
-    username: 1,
-    name: 1,
-  })
+  const blog = await Blog.findById(request.params.id)
+    .populate('user', {
+      username: 1,
+      name: 1,
+    })
+    .populate('comments', { content: 1, id: 1 })
+
   if (blog) {
     response.json(blog)
   } else {

@@ -29,7 +29,10 @@ const blogSlice = createSlice({
       return state.filter((blog) => blog.id !== id)
     },
     appendComment(state, action) {
-      state[0].comments.push(action.payload)
+      const blogId = action.payload.blog
+
+      const blog = state.find((blog) => blogId === blog.id)
+      blog.comments.push(action.payload)
     },
   },
 })

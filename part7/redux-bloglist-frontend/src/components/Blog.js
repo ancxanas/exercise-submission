@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch, useNavigate } from 'react-router-dom'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { likeBlog, deleteBlog, createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = () => {
   const user = useSelector((state) => state.login)
   const blogs = useSelector((state) => state.blog)
+
+  const [content, setContent] = useState('')
 
   const match = useMatch('/blogs/:id')
   const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
@@ -13,6 +16,8 @@ const Blog = () => {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
+
+  if (!blog) return null
 
   const like = (blog) => {
     dispatch(likeBlog(blog))
@@ -25,6 +30,18 @@ const Blog = () => {
       dispatch(setNotification(`${blog.title} by ${blog.author} deleted`))
       navigate('/')
     }
+  }
+
+  const addComment = (event) => {
+    event.preventDefault()
+
+    const comment = {
+      content,
+    }
+
+    dispatch(createComment(blog.id, comment))
+
+    setContent('')
   }
 
   return (
@@ -47,6 +64,15 @@ const Blog = () => {
       </div>
       <div>
         <h3>comments</h3>
+        <form onSubmit={addComment}>
+          <input
+            type="text"
+            value={content}
+            name="comment"
+            onChange={({ target }) => setContent(target.value)}
+          />
+          <button type="submit">add comment</button>
+        </form>
         <ul>
           {blog.comments.map((comment) => (
             <li key={comment.id}>{comment.content}</li>

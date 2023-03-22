@@ -1,3 +1,12 @@
+import {
+  Box,
+  Button,
+  Grid,
+  List,
+  ListItem,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch, useNavigate } from 'react-router-dom'
@@ -46,39 +55,64 @@ const Blog = () => {
 
   return (
     <div className="blog">
-      <h2>
-        {blog.title} {blog.author}
-      </h2>
-      <div>
-        <div>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Typography variant="h2">
+          {blog.title} {blog.author}
+        </Typography>
+      </Box>
+
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography>
           <a href={blog.url}>{blog.url}</a>
-        </div>
-        <div>
-          {blog.likes} likes
-          <button onClick={() => like(blog)}>like</button>
-        </div>
-        <div>added by {blog.user.name}</div>
+        </Typography>
+
+        <Box display="flex">
+          <Typography>{blog.likes} likes</Typography>
+          <Button variant="outlined" sx={{ p: 0 }} onClick={() => like(blog)}>
+            like
+          </Button>
+        </Box>
+
+        <Typography>added by {blog.user.name}</Typography>
         {blog.user.username === user.username ? (
-          <button onClick={handleRemove}>remove</button>
+          <Button variant="outlined" size="small" onClick={handleRemove}>
+            remove
+          </Button>
         ) : null}
-      </div>
-      <div>
-        <h3>comments</h3>
+      </Grid>
+      <Grid sx={{ p: 1 }}>
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h3">comments</Typography>
+        </Box>
         <form onSubmit={addComment}>
-          <input
-            type="text"
-            value={content}
-            name="comment"
-            onChange={({ target }) => setContent(target.value)}
-          />
-          <button type="submit">add comment</button>
+          <Box display="flex">
+            <TextField
+              multiline
+              maxRows="2"
+              type="text"
+              value={content}
+              name="comment"
+              size="small"
+              onChange={({ target }) => setContent(target.value)}
+            />
+            <Button variant="outlined" size="small" type="submit">
+              add comment
+            </Button>
+          </Box>
         </form>
-        <ul>
+        <List sx={{ listStyleType: 'disc', pl: 4 }}>
           {blog.comments.map((comment) => (
-            <li key={comment.id}>{comment.content}</li>
+            <ListItem sx={{ display: 'list-item' }} key={comment.id}>
+              <Typography>{comment.content}</Typography>
+            </ListItem>
           ))}
-        </ul>
-      </div>
+        </List>
+      </Grid>
     </div>
   )
 }

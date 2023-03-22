@@ -1,3 +1,4 @@
+import { Box, Button, Grid, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogin } from '../reducers/loginReducer'
@@ -23,31 +24,42 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id="username"
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id="password"
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">
-        login
-      </button>
-    </form>
+    <Grid container direction="row" alignItems="center" justifyContent="center">
+      <form onSubmit={handleLogin}>
+        <Box sx={{ m: 1 }}>
+          <TextField
+            id="username"
+            type="text"
+            value={username}
+            name="Username"
+            label="username"
+            size="small"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <TextField
+            id="password"
+            type="password"
+            value={password}
+            name="Password"
+            size="small"
+            label="password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </Box>
+        <Grid container justifyContent="center">
+          <Button
+            variant="outlined"
+            size="small"
+            id="login-button"
+            type="submit"
+          >
+            login
+          </Button>
+        </Grid>
+      </form>
+    </Grid>
   )
 }
 

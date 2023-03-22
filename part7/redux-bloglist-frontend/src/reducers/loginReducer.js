@@ -36,7 +36,12 @@ export const userLogin = (userObject) => {
       dispatch(setUser(user))
       dispatch(setLoggedUser(user))
     } catch (exception) {
-      dispatch(setNotification('wrong username or password'))
+      dispatch(
+        setNotification({
+          message: 'wrong username or password',
+          severity: 'error',
+        })
+      )
     }
   }
 }

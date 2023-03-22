@@ -7,6 +7,26 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/loginReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Menu from './components/Menu'
+import {
+  Container,
+  Grid,
+  ThemeProvider,
+  createTheme,
+  Typography,
+} from '@mui/material'
+
+let theme = createTheme({
+  typography: {
+    h2: {
+      fontSize: 25,
+      fontWeight: 'bold',
+    },
+    h3: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  },
+})
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -24,16 +44,37 @@ const App = () => {
   }, [user])
 
   return (
-    <>
-      {!user && (
-        <div>
-          <h2>Log in to application</h2>
-          <Notification />
-          <LoginForm />
-        </div>
-      )}
-      {user && <Menu />}
-    </>
+    <Container>
+      <ThemeProvider theme={theme}>
+        {!user && (
+          <div>
+            <Grid container justifyContent="center">
+              <Notification />
+            </Grid>
+
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              style={{ minHeight: '100vh' }}
+            >
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Typography variant="h2">Log in to application</Typography>
+                <LoginForm />
+              </Grid>
+            </Grid>
+          </div>
+        )}
+        {user && <Menu />}
+      </ThemeProvider>
+    </Container>
   )
 }
 

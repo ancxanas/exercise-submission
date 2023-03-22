@@ -1,3 +1,5 @@
+import { Button, TextField, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
@@ -28,44 +30,54 @@ const BlogForm = ({ blogFormRef }) => {
 
   return (
     <div>
-      <h2>create new</h2>
+      <Box sx={{ m: 1 }}>
+        <Typography variant="h2">create new</Typography>
+      </Box>
+
       <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input
+        <Box sx={{ m: 1 }}>
+          <TextField
             id="title"
             type="text"
-            value={title}
             name="title"
+            value={title}
+            label="title"
+            size="small"
             onChange={({ target }) => setTitle(target.value)}
-            placeholder="add title"
           />
-        </div>
-        <div>
-          author:
-          <input
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <TextField
             id="author"
             type="text"
             value={author}
             name="author"
+            label="author"
+            size="small"
             onChange={({ target }) => setAuthor(target.value)}
-            placeholder="add author"
           />
-        </div>
-        <div>
-          url:
-          <input
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <TextField
             id="url"
             type="url"
             value={url}
             name="url"
+            label="url"
+            size="small"
             onChange={({ target }) => setUrl(target.value)}
-            placeholder="add url"
           />
-        </div>
-        <button id="create-button" type="submit">
-          create
-        </button>
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <Button
+            size="small"
+            variant="outlined"
+            id="create-button"
+            type="submit"
+          >
+            create
+          </Button>
+        </Box>
       </form>
     </div>
   )

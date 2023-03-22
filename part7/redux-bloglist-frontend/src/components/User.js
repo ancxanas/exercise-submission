@@ -1,3 +1,5 @@
+import { Grid, List, ListItem, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 
@@ -11,13 +13,31 @@ const User = () => {
 
   return (
     <>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
-        {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title} </li>
-        ))}
-      </ul>
+      <Grid container direction="column">
+        <Box display="flex" justifyContent="center">
+          <Typography variant="h2">{user.name}</Typography>
+        </Box>
+        <Box sx={{ p: 2 }}>
+          <Typography variant="h3">added blogs</Typography>
+          <List
+            sx={{
+              listStyleType: 'disc',
+              pl: 4,
+            }}
+          >
+            {user.blogs.map((blog) => (
+              <ListItem
+                sx={{
+                  display: 'list-item',
+                }}
+                key={blog.id}
+              >
+                {blog.title}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Grid>
     </>
   )
 }

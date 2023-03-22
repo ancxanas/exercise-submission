@@ -32,7 +32,7 @@ const User = () => {
                 }}
                 key={blog.id}
               >
-                {blog.title}
+                <Typography>{blog.title}</Typography>
               </ListItem>
             ))}
           </List>

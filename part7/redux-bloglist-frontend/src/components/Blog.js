@@ -30,13 +30,23 @@ const Blog = () => {
 
   const like = (blog) => {
     dispatch(likeBlog(blog))
-    dispatch(setNotification(`liked the blog '${blog.title}'`))
+    dispatch(
+      setNotification({
+        message: `liked the blog ${blog.title} by ${blog.author}`,
+        severity: 'success',
+      })
+    )
   }
 
   const handleRemove = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       dispatch(deleteBlog(blog))
-      dispatch(setNotification(`${blog.title} by ${blog.author} deleted`))
+      dispatch(
+        setNotification({
+          message: `${blog.title} by ${blog.author} deleted`,
+          severity: 'error',
+        })
+      )
       navigate('/')
     }
   }

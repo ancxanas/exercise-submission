@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -21,6 +22,12 @@ const BlogForm = ({ blogFormRef }) => {
     }
 
     dispatch(createBlog(newBlog))
+    dispatch(
+      setNotification({
+        severity: 'success',
+        message: `Blog ${newBlog.title} by ${newBlog.author} added`,
+      })
+    )
     blogFormRef.current.toggleVisibility()
 
     setTitle('')

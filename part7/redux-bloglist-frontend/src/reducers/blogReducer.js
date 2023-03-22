@@ -58,7 +58,12 @@ export const createBlog = (blog) => {
       const newBlog = await blogService.create(blog)
       dispatch(appendBlog(newBlog))
     } catch (error) {
-      dispatch(setNotification(error.response.data.error))
+      dispatch(
+        setNotification({
+          severity: 'error',
+          message: error.response.data.error,
+        })
+      )
     }
   }
 }

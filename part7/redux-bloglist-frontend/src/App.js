@@ -17,11 +17,14 @@ import {
 
 let theme = createTheme({
   typography: {
+    fontFamily: 'monospace',
     h2: {
+      fontFamily: 'monospace',
       fontSize: 25,
       fontWeight: 'bold',
     },
     h3: {
+      fontFamily: 'monospace',
       fontSize: 20,
       fontWeight: 'bold',
     },

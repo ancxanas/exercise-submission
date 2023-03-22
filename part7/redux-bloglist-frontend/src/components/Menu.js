@@ -29,7 +29,9 @@ const Menu = () => {
           <Button color="inherit" component={Link} to="/users">
             users
           </Button>
-          <Button color="inherit">{user.name} logged in</Button>
+          <Typography sx={{ p: 1 }} color="inherit">
+            {user.name} logged in
+          </Typography>
           <Button color="inherit" onClick={() => dispatch(userLogout())}>
             logout
           </Button>

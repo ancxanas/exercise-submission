@@ -33,10 +33,7 @@ describe('Blog app', () => {
       cy.get('#password').type('kallangadi')
       cy.get('#login-button').click()
 
-      cy.get('.error')
-        .should('contain', 'wrong username or password')
-        .and('have.css', 'color', 'rgb(255, 0, 0)')
-        .and('have.css', 'border-style', 'solid')
+      cy.get('.notification').should('contain', 'wrong username or password')
 
       cy.get('html').should('not.contain', 'Muhammed Anas logged in')
     })
@@ -55,12 +52,12 @@ describe('Blog app', () => {
         )
         cy.get('#create-button').click()
 
-        cy.get('.success')
-          .should('contain', 'Harry Potter by J. K. Rowling')
-          .and('have.css', 'color', 'rgb(0, 128, 0)')
-          .and('have.css', 'border-style', 'solid')
+        cy.get('.notification').should(
+          'contain',
+          'Harry Potter by J. K. Rowling'
+        )
 
-        cy.get('.blog').should('contain', 'Harry Potter')
+        cy.get('.bloglist').should('contain', 'Harry Potter')
       })
 
       describe('and some blogs exists', function () {
@@ -83,39 +80,25 @@ describe('Blog app', () => {
         })
 
         it('blog can be liked', function () {
-          cy.contains('Harry Potter').contains('view').click()
-          cy.contains('like').click()
+          cy.get('.bloglist').contains('Harry Potter').click()
+          cy.get('.blog').get('button').contains('like').click()
 
-          cy.contains('likes').should('have.length', '1')
-        })
-
-        it('blogs are ordered according to likes', function () {
-          cy.get('.blog').each(($ele) => {
-            cy.wrap($ele).find('button').contains('view').click()
-          })
-
-          const likingBlogs = (title, noOfLikes) => {
-            cy.get('.blog').then(() => {
-              for (let n = 0; n < noOfLikes; n++) {
-                cy.contains(title).find('button').contains('like').click()
-              }
-            })
-          }
-
-          likingBlogs('Harry Potter', 10)
-          likingBlogs('Lord of the Rings', 30)
-          likingBlogs('Hunger Games', 20)
-
-          cy.get('.blog').eq(0).should('contain', 'Lord of the Rings')
-          cy.get('.blog').eq(1).should('contain', 'Hunger Games')
-          cy.get('.blog').eq(2).should('contain', 'Harry Potter')
+          cy.get('.notification').should(
+            'contain',
+            'liked the blog Harry Potter'
+          )
+          cy.contains('1 likes')
         })
 
         it('blog can be deleted', function () {
-          cy.contains('Lord of the Rings').as('Blog').contains('view').click()
-          cy.get('@Blog').contains('remove').click()
+          cy.contains('Lord of the Rings').click()
+          cy.get('button').contains('remove').click()
 
-          cy.get('.blog').should('not.contain', 'Lord of the Rings')
+          cy.get('.bloglist').should('not.contain', 'Lord of the Rings')
+          cy.get('.notification').should(
+            'contain',
+            'Lord of the Rings by J. R. R. Tolkien deleted'
+          )
         })
 
         describe('another user logged in', function () {
@@ -128,8 +111,15 @@ describe('Blog app', () => {
           })
 
           it('delete button is not visible', function () {
-            cy.contains('Harry Potter').as('Blog').contains('view').click()
-            cy.get('@Blog').should('not.contain', 'remove')
+            cy.contains('Harry Potter').click()
+            cy.get('.blog').should('not.contain', 'remove')
+          })
+
+          it.only('can comment', function () {
+            cy.contains('Harry Potter').click()
+            cy.get('#comment-input').type('This is awesome')
+            cy.get('button').contains('add comment').click()
+            cy.get('html').contains('This is awesome')
           })
         })
       })

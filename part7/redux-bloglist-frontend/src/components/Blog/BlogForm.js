@@ -2,8 +2,8 @@ import { Button, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createBlog } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import { createBlog } from '../../reducers/blogReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()

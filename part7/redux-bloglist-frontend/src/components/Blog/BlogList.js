@@ -17,7 +17,7 @@ const BlogList = () => {
       <Table>
         <TableBody>
           {blogs.map((blog) => (
-            <TableRow key={blog.id}>
+            <TableRow className="bloglist" key={blog.id}>
               <TableCell>
                 <Link
                   style={{ textDecoration: 'none' }}

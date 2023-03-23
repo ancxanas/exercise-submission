@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import Togglable from './Togglable'
+import Togglable from '../Togglable'
 import BlogForm from './BlogForm'
 import BlogList from './BlogList'
 

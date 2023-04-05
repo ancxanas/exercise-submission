@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
@@ -7,29 +7,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/loginReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Menu from './components/Menu'
-import {
-  Container,
-  Grid,
-  ThemeProvider,
-  createTheme,
-  Typography,
-} from '@mui/material'
-
-let theme = createTheme({
-  typography: {
-    fontFamily: 'monospace',
-    h2: {
-      fontFamily: 'monospace',
-      fontSize: 25,
-      fontWeight: 'bold',
-    },
-    h3: {
-      fontFamily: 'monospace',
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-  },
-})
+import { Box, Container, Grid, CssBaseline } from '@mui/material'
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -47,36 +25,41 @@ const App = () => {
   }, [user])
 
   return (
-    <Container>
-      <ThemeProvider theme={theme}>
-        {!user && (
-          <div>
-            <Grid container justifyContent="center">
-              <Notification />
-            </Grid>
+    <Container
+      sx={{
+        m: 0,
+        p: 0,
+        bgcolor: 'background',
+        minWidth: '100vw',
+      }}
+    >
+      <CssBaseline />
+      {!user && (
+        <Box>
+          <Grid container justifyContent="center">
+            <Notification />
+          </Grid>
 
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: '100vh' }}
+          >
             <Grid
               container
-              spacing={0}
               direction="column"
               alignItems="center"
               justifyContent="center"
-              style={{ minHeight: '100vh' }}
             >
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Typography variant="h2">Log in to application</Typography>
-                <LoginForm />
-              </Grid>
+              <LoginForm />
             </Grid>
-          </div>
-        )}
-        {user && <Menu />}
-      </ThemeProvider>
+          </Grid>
+        </Box>
+      )}
+      {user && <Menu />}
     </Container>
   )
 }

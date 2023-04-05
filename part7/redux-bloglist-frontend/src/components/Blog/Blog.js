@@ -64,31 +64,32 @@ const Blog = () => {
   }
 
   return (
-    <div className="blog">
+    <Box sx={{ minHeight: '100vh' }} className="blog">
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Typography variant="h2">
+        <Typography variant="h2" color="primary.main">
           {blog.title} {blog.author}
         </Typography>
       </Box>
 
       <Grid
+        sx={{ p: 3 }}
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
       >
-        <Typography>
-          <a href={blog.url}>{blog.url}</a>
-        </Typography>
+        <a href={blog.url}>
+          <Typography color="primary.main">{blog.url}</Typography>
+        </a>
 
         <Box display="flex">
-          <Typography>{blog.likes} likes</Typography>
+          <Typography color="primary.main">{blog.likes} likes</Typography>
           <Button variant="outlined" sx={{ p: 0 }} onClick={() => like(blog)}>
             like
           </Button>
         </Box>
 
-        <Typography>added by {blog.user.name}</Typography>
+        <Typography color="primary.main">added by {blog.user.name}</Typography>
         {blog.user.username === user.username ? (
           <Button variant="outlined" size="small" onClick={handleRemove}>
             remove
@@ -97,7 +98,9 @@ const Blog = () => {
       </Grid>
       <Grid sx={{ p: 1 }}>
         <Box sx={{ my: 1 }}>
-          <Typography variant="h3">comments</Typography>
+          <Typography variant="h3" color="primary.main">
+            comments
+          </Typography>
         </Box>
         <form onSubmit={addComment}>
           <Box display="flex">
@@ -112,19 +115,22 @@ const Blog = () => {
               onChange={({ target }) => setContent(target.value)}
             />
             <Button variant="outlined" size="small" type="submit">
-              add comment
+              <Typography>add comment</Typography>
             </Button>
           </Box>
         </form>
         <List sx={{ listStyleType: 'disc', pl: 4 }}>
           {blog.comments.map((comment) => (
-            <ListItem sx={{ display: 'list-item' }} key={comment.id}>
-              <Typography>{comment.content}</Typography>
+            <ListItem
+              sx={{ display: 'list-item', color: 'primary.main' }}
+              key={comment.id}
+            >
+              {comment.content}
             </ListItem>
           ))}
         </List>
       </Grid>
-    </div>
+    </Box>
   )
 }
 

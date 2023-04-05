@@ -16,16 +16,20 @@ const UsersList = () => {
   const users = useSelector((state) => state.user)
 
   return (
-    <>
+    <Box sx={{ minHeight: '100vh' }}>
       <Box sx={{ p: 1 }}>
-        <Typography variant="h2">Users</Typography>
+        <Typography color="primary.main" variant="h2">
+          Users
+        </Typography>
       </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
-              <TableCell>blogs created</TableCell>
+              <TableCell>
+                <Typography color="primary.main">blogs created</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -36,16 +40,20 @@ const UsersList = () => {
                     style={{ textDecoration: 'none' }}
                     to={`/users/${user.id}`}
                   >
-                    {user.name}
+                    <Typography color="primary.main">{user.name}</Typography>
                   </Link>
                 </TableCell>
-                <TableCell>{user.blogs.length}</TableCell>
+                <TableCell>
+                  <Typography color="primary.main">
+                    {user.blogs.length}
+                  </Typography>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   )
 }
 

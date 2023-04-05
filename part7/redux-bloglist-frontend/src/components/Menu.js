@@ -39,7 +39,9 @@ const Menu = () => {
       </AppBar>
 
       <Box sx={{ p: 1 }}>
-        <Typography variant="h2">blog app</Typography>
+        <Typography sx={{ color: 'primary.main' }} variant="h2">
+          blog app
+        </Typography>
       </Box>
       <Notification />
 

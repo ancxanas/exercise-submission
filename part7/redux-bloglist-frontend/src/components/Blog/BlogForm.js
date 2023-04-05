@@ -38,7 +38,9 @@ const BlogForm = ({ blogFormRef }) => {
   return (
     <div>
       <Box sx={{ m: 1 }}>
-        <Typography variant="h2">create new</Typography>
+        <Typography color="primary.main" variant="h2">
+          create new
+        </Typography>
       </Box>
 
       <form onSubmit={addBlog}>

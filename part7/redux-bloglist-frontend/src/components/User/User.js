@@ -15,10 +15,14 @@ const User = () => {
     <>
       <Grid container direction="column">
         <Box display="flex" justifyContent="center">
-          <Typography variant="h2">{user.name}</Typography>
+          <Typography variant="h2" color="primary.main">
+            {user.name}
+          </Typography>
         </Box>
         <Box sx={{ p: 2 }}>
-          <Typography variant="h3">added blogs</Typography>
+          <Typography variant="h3" color="primary.main">
+            added blogs
+          </Typography>
           <List
             sx={{
               listStyleType: 'disc',
@@ -29,10 +33,11 @@ const User = () => {
               <ListItem
                 sx={{
                   display: 'list-item',
+                  color: 'primary.main',
                 }}
                 key={blog.id}
               >
-                <Typography>{blog.title}</Typography>
+                {blog.title}
               </ListItem>
             ))}
           </List>

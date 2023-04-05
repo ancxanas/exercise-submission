@@ -1,7 +1,8 @@
-import { Box, Button, Grid, TextField } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogin } from '../reducers/loginReducer'
+import StyledTextField from './StyledTextField'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -24,10 +25,18 @@ const LoginForm = () => {
   }
 
   return (
-    <Grid container direction="row" alignItems="center" justifyContent="center">
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Typography variant="h2" color="primary.main" sx={{ p: 3 }}>
+        Blog app
+      </Typography>
       <form onSubmit={handleLogin}>
         <Box sx={{ m: 1 }}>
-          <TextField
+          <StyledTextField
             id="username"
             type="text"
             value={username}
@@ -38,7 +47,7 @@ const LoginForm = () => {
           />
         </Box>
         <Box sx={{ m: 1 }}>
-          <TextField
+          <StyledTextField
             id="password"
             type="password"
             value={password}
@@ -48,7 +57,7 @@ const LoginForm = () => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </Box>
-        <Grid container justifyContent="center">
+        <Grid sx={{ p: 1 }} container justifyContent="center">
           <Button
             variant="outlined"
             size="small"

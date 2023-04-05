@@ -1,17 +1,10 @@
-import {
-  Box,
-  Button,
-  Grid,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Grid, List, ListItem, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch, useNavigate } from 'react-router-dom'
 import { likeBlog, deleteBlog, createComment } from '../../reducers/blogReducer'
 import { setNotification } from '../../reducers/notificationReducer'
+import StyledTextField from '../StyledTextField'
 
 const Blog = () => {
   const user = useSelector((state) => state.login)
@@ -104,7 +97,7 @@ const Blog = () => {
         </Box>
         <form onSubmit={addComment}>
           <Box display="flex">
-            <TextField
+            <StyledTextField
               id="comment-input"
               multiline
               maxRows="2"

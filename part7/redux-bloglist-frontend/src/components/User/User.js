@@ -13,7 +13,7 @@ const User = () => {
 
   return (
     <>
-      <Grid container direction="column">
+      <Grid sx={{ minHeight: '100vh' }} container direction="column">
         <Box display="flex" justifyContent="center">
           <Typography variant="h2" color="primary.main">
             {user.name}

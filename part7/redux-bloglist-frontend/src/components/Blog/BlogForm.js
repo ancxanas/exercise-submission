@@ -1,9 +1,10 @@
-import { Button, TextField, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../../reducers/blogReducer'
 import { setNotification } from '../../reducers/notificationReducer'
+import StyledTextField from '../StyledTextField'
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -45,7 +46,7 @@ const BlogForm = ({ blogFormRef }) => {
 
       <form onSubmit={addBlog}>
         <Box sx={{ m: 1 }}>
-          <TextField
+          <StyledTextField
             id="title"
             type="text"
             name="title"
@@ -56,7 +57,7 @@ const BlogForm = ({ blogFormRef }) => {
           />
         </Box>
         <Box sx={{ m: 1 }}>
-          <TextField
+          <StyledTextField
             id="author"
             type="text"
             value={author}
@@ -67,7 +68,7 @@ const BlogForm = ({ blogFormRef }) => {
           />
         </Box>
         <Box sx={{ m: 1 }}>
-          <TextField
+          <StyledTextField
             id="url"
             type="url"
             value={url}

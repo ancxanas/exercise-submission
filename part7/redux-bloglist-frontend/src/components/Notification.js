@@ -8,7 +8,11 @@ const Notification = () => {
   if (!notification) return null
 
   return (
-    <Alert className="notification" severity={notification.severity}>
+    <Alert
+      sx={{ bgcolor: 'primary.main' }}
+      className="notification"
+      severity={notification.severity}
+    >
       {notification.message}
     </Alert>
   )

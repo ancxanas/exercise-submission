@@ -4,12 +4,15 @@ import App from './App'
 import { Provider } from 'react-redux'
 import store from './store'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { ThemeProvider, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material'
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     primary: {
-      main: '#66FCF1',
+      main: '#212427',
+    },
+    secondary: {
+      main: '#FFFFF',
     },
     background: '#45A29E',
   },
@@ -27,6 +30,8 @@ const theme = createTheme({
     },
   },
 })
+
+theme = responsiveFontSizes(theme)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>

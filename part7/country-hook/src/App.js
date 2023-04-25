@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Country from './components/Country'
 import { useField, useCountry } from './hooks'
+import { Box, Grid } from '@mui/material'
 
 const App = () => {
   const nameInput = useField('text')
@@ -13,14 +14,20 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      sx={{ minHeight: '100vh' }}
+    >
       <form onSubmit={fetch}>
         <input {...nameInput} />
         <button>find</button>
       </form>
 
       <Country country={country} nameInput={nameInput.value} />
-    </div>
+    </Grid>
   )
 }
 

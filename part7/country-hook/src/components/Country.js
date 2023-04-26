@@ -14,8 +14,14 @@ const Country = ({ country, nameInput }) => {
   country = country[0]
 
   return (
-    <Card sx={{ m: 2 }}>
-      <Typography textAlign="center" gutterBottom variant="h6" component="div">
+    <Card sx={{ m: 2, p: 6, boxShadow: 12 }}>
+      <Typography
+        sx={{ my: 2 }}
+        textAlign="center"
+        gutterBottom
+        variant="h4"
+        component="div"
+      >
         {country.name.common}
       </Typography>
       <Grid
@@ -26,15 +32,23 @@ const Country = ({ country, nameInput }) => {
       >
         <CardMedia
           sx={{
-            height: 100,
-            width: 150,
+            minHeight: 100,
+            minWidth: 150,
+            boxShadow: 5,
           }}
           image={country.flags.svg}
         />
       </Grid>
+
       <CardContent>
-        <Typography>capital {country.capital} </Typography>
-        <Typography>population {country.population}</Typography>
+        <Typography textAlign="center">Capital: {country.capital} </Typography>
+        <Typography textAlign="center">
+          Population: {country.population}
+        </Typography>
+        <Typography textAlign="center">Area: {country.area}</Typography>
+        <Typography textAlign="center">
+          Continent: {country.continents}
+        </Typography>
       </CardContent>
     </Card>
   )

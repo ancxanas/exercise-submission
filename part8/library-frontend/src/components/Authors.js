@@ -1,6 +1,4 @@
-const Authors = (props) => {
-  const authors = []
-
+const Authors = ({ authors }) => {
   return (
     <div>
       <h2>authors</h2>

@@ -2,8 +2,15 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Authors from './Authors'
 import Books from './Books'
 import NewBook from './NewBook'
+import { useQuery } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS } from '../queries'
 
 const Menu = () => {
+  const authors = useQuery(ALL_AUTHORS)
+  const books = useQuery(ALL_BOOKS)
+
+  if (authors.loading) return <div>loading...</div>
+
   return (
     <div>
       <Link to="/">
@@ -17,8 +24,11 @@ const Menu = () => {
       </Link>
 
       <Routes>
-        <Route path="/" element={<Authors />} />
-        <Route path="/books" element={<Books />} />
+        <Route
+          path="/"
+          element={<Authors authors={authors.data.allAuthors} />}
+        />
+        <Route path="/books" element={<Books books={books.data.allBooks} />} />
         <Route path="/add_new" element={<NewBook />} />
       </Routes>
     </div>

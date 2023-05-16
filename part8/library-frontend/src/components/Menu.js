@@ -6,22 +6,20 @@ import NewBook from './NewBook'
 const Menu = () => {
   return (
     <div>
-      <div>
-        <Link>
-          <button to="/">authors</button>
-        </Link>
-        <Link>
-          <button to="/books">books</button>
-        </Link>
-        <Link>
-          <button to="/add_book">add book</button>
-        </Link>
-      </div>
+      <Link to="/">
+        <button>authors</button>
+      </Link>
+      <Link to="/books">
+        <button>books</button>
+      </Link>
+      <Link to="/add_new">
+        <button>add new</button>
+      </Link>
 
       <Routes>
         <Route path="/" element={<Authors />} />
         <Route path="/books" element={<Books />} />
-        <Route path="/add_book" element={<NewBook />} />
+        <Route path="/add_new" element={<NewBook />} />
       </Routes>
     </div>
   )

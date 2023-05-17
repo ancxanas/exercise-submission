@@ -9,7 +9,7 @@ const Menu = () => {
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
 
-  if (authors.loading) return <div>loading...</div>
+  if (authors.loading || books.loading) return <div>loading...</div>
 
   return (
     <div>

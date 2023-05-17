@@ -24,12 +24,12 @@ const Authors = ({ authors }) => {
           </tbody>
         </table>
       </div>
-      <BornForm />
+      <AuthorForm authors={authors} />
     </div>
   )
 }
 
-const BornForm = () => {
+const AuthorForm = ({ authors }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
 
@@ -39,6 +39,8 @@ const BornForm = () => {
 
   const submit = (event) => {
     event.preventDefault()
+
+    document.getElementById('select').value = 'select'
 
     editAuthor({ variables: { name, setBornTo: Number(born) } })
 
@@ -50,13 +52,17 @@ const BornForm = () => {
     <div>
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
-        <div>
-          name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+        name
+        <select id="select" onChange={(e) => setName(e.target.value)}>
+          <option value="select" defaultValue>
+            select
+          </option>
+          {authors.map((author) => (
+            <option key={author.name} value={author.name}>
+              {author.name}
+            </option>
+          ))}
+        </select>
         <div>
           born
           <input

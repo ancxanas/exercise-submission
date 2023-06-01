@@ -140,9 +140,9 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
+    bookCount: () => Book.collection.countDocuments(),
+    authorCount: () => Author.collection.countDocuments(),
+    allBooks: async (root, args) => {
       if (args.genre && args.author) {
         return books.filter(
           (book) =>
@@ -153,10 +153,10 @@ const resolvers = {
       } else if (args.author) {
         return books.filter((book) => args.author === book.author)
       } else {
-        return books
+        return Book.find({})
       }
     },
-    allAuthors: () => authors,
+    allAuthors: async () => Author.find({}),
   },
   Author: {
     bookCount: (root) => {
@@ -168,14 +168,13 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: (root, args) => {
-      const book = { ...args, id: uuid() }
-      books = books.concat(book)
-      if (!authors.find((author) => author.name === args.author)) {
-        const author = { name: args.author, id: uuid() }
-        authors = authors.concat(author)
+    addBook: async (root, args) => {
+      const book = new Book({ ...args })
+      if (!Author.find({ id: args.author })) {
+        const author = new Author({ name: args.author })
+        author.save()
       }
-      return book
+      return book.save().populate('author')
     },
     editAuthor: (root, args) => {
       const author = authors.find((author) => author.name === args.name)

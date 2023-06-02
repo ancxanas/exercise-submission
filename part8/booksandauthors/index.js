@@ -1,12 +1,12 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { v1: uuid } = require('uuid')
 
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 
 const Book = require('./models/book')
 const Author = require('./models/author')
+const { GraphQLError } = require('graphql')
 
 require('dotenv').config()
 
@@ -68,10 +68,10 @@ const resolvers = {
       if (args.genre && args.author) {
         return Book.find({
           author: args.author,
-          genres: `${args.genre}`,
+          genres: args.genre,
         }).populate('author')
       } else if (args.genre) {
-        return Book.find({ genres: `${args.genre}` }).populate('author')
+        return Book.find({ genres: args.genre }).populate('author')
       } else if (args.author) {
         return Book.find({ author: args.author }).populate('author')
       } else {
@@ -86,12 +86,35 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args) => {
       const book = new Book({ ...args })
-      if (!Author.find({ id: args.author })) {
+      if (!Author.findById(args.author)) {
         const author = new Author({ name: args.author })
-        author.save()
+
+        try {
+          author.save()
+        } catch (error) {
+          throw new GraphQLError('Adding author failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.author,
+              error,
+            },
+          })
+        }
       }
-      let addedBook = await book.save()
-      return Book.findById(addedBook._id).populate('author')
+
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError('Adding book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.title,
+            error,
+          },
+        })
+      }
+
+      return Book.findById(book._id).populate('author')
     },
     editAuthor: (root, args) => {
       const author = authors.find((author) => author.name === args.name)

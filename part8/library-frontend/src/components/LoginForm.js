@@ -1,13 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { LOGIN } from '../queries'
+import { useMutation } from '@apollo/client'
+import { useNavigate } from 'react-router-dom'
 
-const LoginForm = () => {
+const LoginForm = ({ setToken }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const submit = (e) => {
+  const navigate = useNavigate()
+
+  const [login, result] = useMutation(LOGIN, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message)
+    },
+  })
+
+  useEffect(() => {
+    if (result.data) {
+      const token = result.data.login.value
+      setToken(token)
+      localStorage.setItem('library-user-token', token)
+    }
+  }, [result.data]) //eslint-disable-line
+
+  const submit = async (e) => {
     e.preventDefault()
 
-    console.log(e)
+    login({ variables: { username, password } })
+
+    navigate('/')
   }
 
   return (

@@ -18,7 +18,6 @@ const Authors = ({ authors }) => {
               <tr key={a.name}>
                 <td>{a.name}</td>
                 <td>{a.born}</td>
-                <td>{a.bookCount}</td>
               </tr>
             ))}
           </tbody>
@@ -35,6 +34,9 @@ const AuthorForm = ({ authors }) => {
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message)
+    },
   })
 
   const submit = (event) => {

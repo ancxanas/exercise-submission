@@ -4,6 +4,7 @@ import Books from './Books'
 import NewBook from './NewBook'
 import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import LoginForm from './LoginForm'
 
 const Menu = () => {
   const authors = useQuery(ALL_AUTHORS)
@@ -22,6 +23,9 @@ const Menu = () => {
       <Link to="/add_new">
         <button>add new</button>
       </Link>
+      <Link to="/login">
+        <button>login</button>
+      </Link>
 
       <Routes>
         <Route
@@ -30,6 +34,7 @@ const Menu = () => {
         />
         <Route path="/books" element={<Books books={books.data.allBooks} />} />
         <Route path="/add_new" element={<NewBook />} />
+        <Route path="/login" element={<LoginForm />} />
       </Routes>
     </div>
   )

@@ -13,15 +13,23 @@ const LoginForm = ({ setToken }) => {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message)
     },
-  })
+    onCompleted: (data) => {
+      const token = data.login.value
 
-  useEffect(() => {
-    if (result.data) {
-      const token = result.data.login.value
       setToken(token)
       localStorage.setItem('library-user-token', token)
-    }
-  }, [result.data]) //eslint-disable-line
+    },
+  })
+
+  //   useEffect(() => {
+  //     if (result.data) {
+  //       console.log(result)
+  //       const token = result.data.login.value
+
+  //       setToken(token)
+  //       localStorage.setItem('library-user-token', token)
+  //     }
+  //   }, [result.data]) //eslint-disable-line
 
   const submit = async (e) => {
     e.preventDefault()
@@ -35,14 +43,14 @@ const LoginForm = ({ setToken }) => {
     <div>
       <form onSubmit={submit}>
         <div>
-          username:{' '}
+          username:
           <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-          password:{' '}
+          password:
           <input
             value={password}
             onChange={({ target }) => setPassword(target.value)}

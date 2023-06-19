@@ -2,18 +2,30 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Authors from './Authors'
 import Books from './Books'
 import NewBook from './NewBook'
-import { useQuery } from '@apollo/client'
+import { useApolloClient, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS } from '../queries'
 import LoginForm from './LoginForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Menu = () => {
   const [token, setToken] = useState(null)
 
+  useEffect(() => {
+    const token = localStorage.getItem('library-user-token')
+    setToken(token)
+  }, [])
+
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
+  const client = useApolloClient()
 
   if (authors.loading || books.loading) return <div>loading...</div>
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
 
   return (
     <div>
@@ -28,9 +40,12 @@ const Menu = () => {
           <button>login</button>
         </Link>
       ) : (
-        <Link to="/add_new">
-          <button>add new</button>
-        </Link>
+        <>
+          <Link to="/add_new">
+            <button>add new</button>
+          </Link>
+          <button onClick={logout}>logout</button>
+        </>
       )}
 
       <Routes>

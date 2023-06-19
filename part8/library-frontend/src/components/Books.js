@@ -1,4 +1,5 @@
 const Books = ({ books }) => {
+  console.log(books)
   return (
     <div>
       <h2>books</h2>

@@ -6,9 +6,11 @@ import { useApolloClient, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS } from '../queries'
 import LoginForm from './LoginForm'
 import { useEffect, useState } from 'react'
+import Recommend from './Recommend'
 
 const Menu = () => {
   const [token, setToken] = useState(null)
+  console.log(token)
 
   useEffect(() => {
     const token = localStorage.getItem('library-user-token')
@@ -44,6 +46,9 @@ const Menu = () => {
           <Link to="/add_new">
             <button>add new</button>
           </Link>
+          <Link to="/recommend">
+            <button>recommend</button>
+          </Link>
           <button onClick={logout}>logout</button>
         </>
       )}
@@ -55,6 +60,10 @@ const Menu = () => {
         />
         <Route path="/books" element={<Books books={books.data.allBooks} />} />
         <Route path="/add_new" element={<NewBook />} />
+        <Route
+          path="recommend"
+          element={<Recommend books={books.data.allBooks} />}
+        />
         <Route path="/login" element={<LoginForm setToken={setToken} />} />
       </Routes>
     </div>

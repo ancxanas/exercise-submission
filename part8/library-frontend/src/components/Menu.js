@@ -51,7 +51,7 @@ const Menu = () => {
       <Routes>
         <Route
           path="/"
-          element={<Authors authors={authors.data.allAuthors} />}
+          element={<Authors authors={authors.data.allAuthors} token={token} />}
         />
         <Route path="/books" element={<Books books={books.data.allBooks} />} />
         <Route path="/add_new" element={<NewBook />} />

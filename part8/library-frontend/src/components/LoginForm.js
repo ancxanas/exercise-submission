@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { LOGIN } from '../queries'
 import { useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
@@ -20,16 +20,6 @@ const LoginForm = ({ setToken }) => {
       localStorage.setItem('library-user-token', token)
     },
   })
-
-  //   useEffect(() => {
-  //     if (result.data) {
-  //       console.log(result)
-  //       const token = result.data.login.value
-
-  //       setToken(token)
-  //       localStorage.setItem('library-user-token', token)
-  //     }
-  //   }, [result.data]) //eslint-disable-line
 
   const submit = async (e) => {
     e.preventDefault()

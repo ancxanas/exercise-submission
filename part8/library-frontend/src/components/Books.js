@@ -7,6 +7,7 @@ const Books = ({ genres }) => {
 
   const bookByGenre = useQuery(FIND_BOOK_BY_GENRE, {
     variables: { genre: filter },
+    fetchPolicy: 'cache-and-network',
   })
 
   if (bookByGenre.loading) return <div>loading...</div>
@@ -17,7 +18,9 @@ const Books = ({ genres }) => {
     setFilter(e.target.value)
   }
 
-  const showAll = (e) => setFilter(e.target.value)
+  const showAll = (e) => {
+    setFilter(e.target.value)
+  }
 
   return (
     <div>

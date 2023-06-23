@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import {
+  ADD_BOOK,
+  ALL_AUTHORS,
+  ALL_BOOKS,
+  FIND_BOOK_BY_GENRE,
+} from '../queries'
 import { useNavigate } from 'react-router-dom'
 
 const NewBook = () => {
@@ -16,6 +21,11 @@ const NewBook = () => {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     onError: (error) => {
       console.log(error.graphQLErrors[0])
+    },
+    update: (cache, response) => {
+      cache.updateQuery({ query: FIND_BOOK_BY_GENRE }, ({ allBooks }) => ({
+        allBooks: allBooks.concat(response.data.addBook),
+      }))
     },
   })
 

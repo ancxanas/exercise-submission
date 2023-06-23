@@ -69,3 +69,23 @@ export const LOGIN = gql`
     }
   }
 `
+
+export const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    author {
+      name
+    }
+    genres
+  }
+`
+
+export const FIND_BOOK_BY_GENRE = gql`
+  query findBooksByGenre($genre: String!) {
+    allBooks(genre: $genre) {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`

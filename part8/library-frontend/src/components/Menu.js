@@ -10,7 +10,6 @@ import Recommend from './Recommend'
 
 const Menu = () => {
   const [token, setToken] = useState(null)
-  console.log(token)
 
   useEffect(() => {
     const token = localStorage.getItem('library-user-token')
@@ -22,6 +21,9 @@ const Menu = () => {
   const client = useApolloClient()
 
   if (authors.loading || books.loading) return <div>loading...</div>
+  const genres = [
+    ...new Set(books.data.allBooks.map((book) => book.genres).flat()),
+  ]
 
   const logout = () => {
     setToken(null)
@@ -58,7 +60,7 @@ const Menu = () => {
           path="/"
           element={<Authors authors={authors.data.allAuthors} token={token} />}
         />
-        <Route path="/books" element={<Books books={books.data.allBooks} />} />
+        <Route path="/books" element={<Books genres={genres} />} />
         <Route path="/add_new" element={<NewBook />} />
         <Route
           path="recommend"

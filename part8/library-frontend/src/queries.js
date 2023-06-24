@@ -90,3 +90,11 @@ export const FIND_BOOK_BY_GENRE = gql`
   }
   ${BOOK_DETAILS}
 `
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`

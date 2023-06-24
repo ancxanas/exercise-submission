@@ -28,6 +28,8 @@ const NewBook = () => {
         response.data.addBook
       )
     },
+    onCompleted: ({ addBook }) =>
+      window.alert(`${addBook.title} by ${addBook.author.name} added`),
   })
 
   const submit = async (event) => {

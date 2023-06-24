@@ -1,6 +1,22 @@
 import { useApolloClient, useSubscription } from '@apollo/client'
 import Menu from './components/Menu'
-import { ALL_BOOKS, BOOK_ADDED, FIND_BOOK_BY_GENRE } from './queries'
+import { BOOK_ADDED, FIND_BOOK_BY_GENRE } from './queries'
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqueByName = (itemsToFilter) => {
+    let books = new Set()
+    return itemsToFilter.filter((item) => {
+      let book = item.title
+      return books.has(book) ? false : books.add(book)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqueByName(allBooks.concat(addedBook)),
+    }
+  })
+}
 
 const App = () => {
   const client = useApolloClient()
@@ -9,11 +25,13 @@ const App = () => {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded
 
-      client.cache.updateQuery(
-        { query: FIND_BOOK_BY_GENRE, variables: { genre: '' } },
-        ({ allBooks }) => {
-          return { allBooks: allBooks.concat(addedBook) }
-        }
+      updateCache(
+        client.cache,
+        {
+          query: FIND_BOOK_BY_GENRE,
+          variables: { genre: '' },
+        },
+        addedBook
       )
     },
     onError: (error) => {

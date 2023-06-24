@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK, ALL_AUTHORS, FIND_BOOK_BY_GENRE } from '../queries'
 import { useNavigate } from 'react-router-dom'
+import { updateCache } from '../App'
 
 const NewBook = () => {
   const [title, setTitle] = useState('')
@@ -18,13 +19,13 @@ const NewBook = () => {
       console.log(error.graphQLErrors[0])
     },
     update: (cache, response) => {
-      cache.updateQuery(
-        { query: FIND_BOOK_BY_GENRE, variables: { genre: '' } },
-        ({ allBooks }) => {
-          return {
-            allBooks: allBooks.concat(response.data.addBook),
-          }
-        }
+      updateCache(
+        cache,
+        {
+          query: FIND_BOOK_BY_GENRE,
+          variables: { genre: '' },
+        },
+        response.data.addBook
       )
     },
   })

@@ -31,7 +31,7 @@ const resolvers = {
     },
   },
   Author: {
-    bookCount: async () => Book.countDocuments(),
+    bookCount: async (root) => Book.countDocuments({ author: root._id }),
   },
   Subscription: {
     bookAdded: {
@@ -72,9 +72,11 @@ const resolvers = {
             })
           }
 
-          pubsub.publish('BOOK_ADDED', { bookAdded: book })
+          const savedBook = await Book.findById(book._id).populate('author')
 
-          return Book.findById(book._id).populate('author')
+          pubsub.publish('BOOK_ADDED', { bookAdded: savedBook })
+
+          return savedBook
         } catch (error) {
           throw new GraphQLError('Adding author failed', {
             extensions: {
@@ -100,9 +102,11 @@ const resolvers = {
         })
       }
 
-      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+      const savedBook = await Book.findById(book._id).populate('author')
 
-      return Book.findById(book._id).populate('author')
+      pubsub.publish('BOOK_ADDED', { bookAdded: savedBook })
+
+      return savedBook
     },
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser

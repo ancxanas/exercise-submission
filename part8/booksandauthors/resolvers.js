@@ -31,7 +31,6 @@ const resolvers = {
       }
     },
     allAuthors: async () => {
-      console.log('Author.find')
       return Author.find({})
     },
     allUsers: async () => User.find({}),

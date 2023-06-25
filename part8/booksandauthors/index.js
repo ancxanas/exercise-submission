@@ -12,7 +12,7 @@ const { WebSocketServer } = require('ws')
 const { useServer } = require('graphql-ws/lib/use/ws')
 
 const jwt = require('jsonwebtoken')
-const typeDefs = require('./schema')
+const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
 
 const mongoose = require('mongoose')

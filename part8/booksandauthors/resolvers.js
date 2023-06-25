@@ -1,11 +1,16 @@
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
 
+const DataLoader = require('dataloader')
+const batchCountBooks = require('./batchCountBooks')
+
 const Book = require('./models/book')
 const Author = require('./models/author')
 const User = require('./models/user')
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
+
+const bookCountLoader = new DataLoader(batchCountBooks)
 
 const resolvers = {
   Query: {
@@ -25,14 +30,19 @@ const resolvers = {
         return Book.find({}).populate('author')
       }
     },
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => {
+      console.log('Author.find')
+      return Author.find({})
+    },
     allUsers: async () => User.find({}),
     me: (root, args, context) => {
       return context.currentUser
     },
   },
   Author: {
-    bookCount: async (root) => Book.countDocuments({ author: root._id }),
+    bookCount: async (root) => {
+      return bookCountLoader.load(root._id)
+    },
   },
   Subscription: {
     bookAdded: {

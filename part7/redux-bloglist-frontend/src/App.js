@@ -7,7 +7,6 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/loginReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Menu from './components/Menu'
-import { Box, Container, Grid, CssBaseline } from '@mui/material'
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -25,42 +24,22 @@ const App = () => {
   }, [user])
 
   return (
-    <Container
-      sx={{
-        m: 0,
-        p: 0,
-        bgcolor: 'background',
-        minWidth: '100vw',
-      }}
-    >
-      <CssBaseline />
+    <div>
       {!user && (
-        <Box>
-          <Grid container justifyContent="center">
+        <div>
+          <div>
             <Notification />
-          </Grid>
+          </div>
 
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            sx={{ minHeight: '100vh' }}
-          >
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-            >
+          <div>
+            <div>
               <LoginForm />
-            </Grid>
-          </Grid>
-        </Box>
+            </div>
+          </div>
+        </div>
       )}
       {user && <Menu />}
-    </Container>
+    </div>
   )
 }
 

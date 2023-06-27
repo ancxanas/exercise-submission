@@ -1,10 +1,7 @@
-import { Button, Typography } from '@mui/material'
-import { Box } from '@mui/system'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../../reducers/blogReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import StyledTextField from '../StyledTextField'
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -38,56 +35,40 @@ const BlogForm = ({ blogFormRef }) => {
 
   return (
     <div>
-      <Box sx={{ m: 1 }}>
-        <Typography color="primary.main" variant="h2">
-          create new
-        </Typography>
-      </Box>
-
+      create new
       <form onSubmit={addBlog}>
-        <Box sx={{ m: 1 }}>
-          <StyledTextField
+        <div>
+          <input
             id="title"
             type="text"
             name="title"
             value={title}
-            label="title"
-            size="small"
             onChange={({ target }) => setTitle(target.value)}
           />
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <StyledTextField
+        </div>
+        <div>
+          <input
             id="author"
             type="text"
             value={author}
             name="author"
-            label="author"
-            size="small"
             onChange={({ target }) => setAuthor(target.value)}
           />
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <StyledTextField
+        </div>
+        <div>
+          <input
             id="url"
             type="url"
             value={url}
             name="url"
-            label="url"
-            size="small"
             onChange={({ target }) => setUrl(target.value)}
           />
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <Button
-            size="small"
-            variant="outlined"
-            id="create-button"
-            type="submit"
-          >
+        </div>
+        <div>
+          <button id="create-button" type="submit">
             create
-          </Button>
-        </Box>
+          </button>
+        </div>
       </form>
     </div>
   )

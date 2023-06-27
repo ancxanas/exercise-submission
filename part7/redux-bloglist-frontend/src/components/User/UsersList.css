@@ -1,0 +1,26 @@
+.userslist-title {
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+.userslist-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.userslist-row:hover td {
+    background-color: #d3b4b4;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+}
+
+.userslist-table td {
+    padding: 1em;
+    border-bottom: 1px solid #ddd;
+}
+
+.userslist-link {
+    color: black;
+    text-decoration: none;
+}
+

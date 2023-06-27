@@ -1,0 +1,8 @@
+.togglable-button {
+    color: black;
+        background-color: transparent;
+        border: 1px solid #d3b4b4;
+        padding: 0.7em;
+        border-radius: 10px;
+        transition: .4s ease-in-out;
+}

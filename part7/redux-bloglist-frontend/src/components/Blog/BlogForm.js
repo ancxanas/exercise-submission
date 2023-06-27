@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../../reducers/blogReducer'
 import { setNotification } from '../../reducers/notificationReducer'
+import './BlogForm.css'
 
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -35,37 +36,40 @@ const BlogForm = ({ blogFormRef }) => {
 
   return (
     <div>
-      create new
+      <h2 className="blogform-title">create new</h2>
       <form onSubmit={addBlog}>
         <div>
           <input
+            className="blogform-input"
             id="title"
             type="text"
-            name="title"
+            placeholder="title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
           <input
+            className="blogform-input"
             id="author"
             type="text"
             value={author}
-            name="author"
+            placeholder="author"
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
           <input
+            className="blogform-input"
             id="url"
             type="url"
             value={url}
-            name="url"
+            placeholder="url"
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
         <div>
-          <button id="create-button" type="submit">
+          <button className="blogform-button" id="create-button" type="submit">
             create
           </button>
         </div>

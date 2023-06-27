@@ -1,0 +1,12 @@
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.notification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

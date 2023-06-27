@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import blogService from './services/blogs'
-import LoginForm from './components/LoginForm'
-import Notification from './components/Notification'
+import LoginForm from './components/Login/LoginForm'
+import Notification from './components/Notification/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/loginReducer'
 import { initializeUsers } from './reducers/userReducer'
-import Menu from './components/Menu'
+import Menu from './components/NavBar/Menu'
+import './App.css'
 
 const App = () => {
   const user = useSelector((state) => state.login)
@@ -27,12 +28,12 @@ const App = () => {
     <div>
       {!user && (
         <div>
-          <div>
+          <div className="notification-container">
             <Notification />
           </div>
 
           <div>
-            <div>
+            <div className="login-form-container">
               <LoginForm />
             </div>
           </div>

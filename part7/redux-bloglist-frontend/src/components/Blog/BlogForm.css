@@ -1,0 +1,27 @@
+.blogform-title {
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+.blogform-input {
+    display: block;
+    width: 40%;
+    padding: 0.7em;
+    margin-bottom: 1em;
+    border-radius: 5px;
+    border: 1px solid #d3b4b4;
+}
+
+.blogform-button {
+    color: black;
+    background-color: transparent;
+    border: 1px solid #d3b4b4;
+    padding: 0.7em;
+    border-radius: 10px;
+    transition: .4s ease-in-out;
+}
+
+.blogform-button:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+}

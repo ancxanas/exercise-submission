@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMatch, useNavigate } from 'react-router-dom'
 import { likeBlog, deleteBlog, createComment } from '../../reducers/blogReducer'
 import { setNotification } from '../../reducers/notificationReducer'
+import './Blog.css'
 
 const Blog = () => {
   const user = useSelector((state) => state.login)
@@ -56,32 +57,43 @@ const Blog = () => {
 
   return (
     <div>
-      <div>
-        {blog.title} {blog.author}
-      </div>
+      <div className="blog-container">
+        <h2 className="blog-title">
+          {blog.title} by {blog.author}
+        </h2>
 
-      <div>
-        <a href={blog.url}>{blog.url}</a>
-        <div>
-          {blog.likes} likes
-          <button onClick={() => like(blog)}>like</button>
+        <div className="blog-details">
+          <a className="blog-url" href={blog.url}>
+            {blog.url}
+          </a>
+          <div>
+            {blog.likes} likes
+            <button className="blog-like-button" onClick={() => like(blog)}>
+              like
+            </button>
+          </div>
+          added by {blog.user.name}
+          {blog.user.username === user.username ? (
+            <button className="blog-remove-button" onClick={handleRemove}>
+              remove
+            </button>
+          ) : null}
         </div>
-        added by {blog.user.name}
-        {blog.user.username === user.username ? (
-          <button onClick={handleRemove}>remove</button>
-        ) : null}
       </div>
       <div>
-        <div>comments</div>
+        <h3 className="comments-title">comments</h3>
         <form onSubmit={addComment}>
           <div display="flex">
             <input
+              className="comment-input"
               id="comment-input"
               type="text"
               value={content}
               onChange={({ target }) => setContent(target.value)}
             />
-            <button type="submit">add comment</button>
+            <button className="comment-button" type="submit">
+              add comment
+            </button>
           </div>
         </form>
         <ul>

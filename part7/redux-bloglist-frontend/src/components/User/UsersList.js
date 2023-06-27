@@ -1,27 +1,26 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import './UsersList.css'
 
 const UsersList = () => {
   const users = useSelector((state) => state.user)
 
   return (
-    <div>
-      <div>Users</div>
-      <table>
-        <th>
+    <>
+      <h1 className="userslist-title">Users</h1>
+      <table className="userslist-table">
+        <thead>
           <tr>
-            <td></td>
-            <td>blogs created</td>
+            <th></th>
+            <th>blogs created</th>
           </tr>
-        </th>
+        </thead>
+
         <tbody>
           {users.map((user) => (
-            <tr key={user.id}>
+            <tr className="userslist-row" key={user.id}>
               <td>
-                <Link
-                  style={{ textDecoration: 'none' }}
-                  to={`/users/${user.id}`}
-                >
+                <Link className="userslist-link" to={`/users/${user.id}`}>
                   {user.name}
                 </Link>
               </td>
@@ -30,7 +29,7 @@ const UsersList = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   )
 }
 

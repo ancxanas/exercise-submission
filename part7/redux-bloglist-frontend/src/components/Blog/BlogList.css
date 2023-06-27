@@ -1,0 +1,20 @@
+.bloglist-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bloglist-row:hover td {
+    background-color: #d3b4b4;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+}
+
+.bloglist-table td {
+    padding: 1em;
+    border-bottom: 1px solid #ddd;
+}
+
+.bloglist-link {
+    color: black;
+    text-decoration: none;
+}
+

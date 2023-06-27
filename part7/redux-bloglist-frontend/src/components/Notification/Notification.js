@@ -5,7 +5,7 @@ const Notification = () => {
 
   if (!notification) return null
 
-  return <div> {notification.message}</div>
+  return <div>{notification.message}</div>
 }
 
 export default Notification

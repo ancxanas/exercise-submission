@@ -1,0 +1,21 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 1em;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px;
+}
+
+.navbar .navbar-button {
+    color: black;
+    background-color: transparent;
+    border: none;
+    padding: 0.7em;
+    border-radius: 10px;
+}
+
+.navbar .navbar-button:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+}

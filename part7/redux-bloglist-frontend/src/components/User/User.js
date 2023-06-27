@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
+import './User.css'
 
 const User = () => {
   const users = useSelector((state) => state.user)
@@ -11,11 +12,11 @@ const User = () => {
 
   return (
     <>
-      <div>
-        {user.name}
+      <div className="user-container">
+        <h2 className="user-name-title">{user.name}</h2>
 
         <div>
-          added blogs
+          <h3 className="added-blog-title">added blogs</h3>
           <ul>
             {user.blogs.map((blog) => (
               <li key={blog.id}>{blog.title}</li>

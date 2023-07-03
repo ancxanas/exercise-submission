@@ -5,6 +5,12 @@ interface BmiValues {
   weight: number;
 }
 
+interface BmiResult {
+  height: number;
+  weight: number;
+  bmi: string;
+}
+
 const parseArguments = (args: string[]): BmiValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
@@ -19,14 +25,20 @@ const parseArguments = (args: string[]): BmiValues => {
   }
 };
 
-const calculateBmi = (height: number, weight: number): string => {
+const calculateBmi = (height: number, weight: number): BmiResult => {
   const heightInMetre = height / 100;
 
   const heightInMetreSquare = heightInMetre * heightInMetre;
 
-  const bmi = Number((weight / heightInMetreSquare).toFixed(1));
+  const bmiValue = Number((weight / heightInMetreSquare).toFixed(1));
 
-  return bmiResult(bmi);
+  const bmi = bmiResult(bmiValue);
+
+  return {
+    height,
+    weight,
+    bmi,
+  };
 };
 
 const bmiResult = (bmi: number): string => {
@@ -59,3 +71,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateBmi;

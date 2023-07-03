@@ -27,6 +27,8 @@ const parseArguments = (args: string[]): ExerciseValues => {
       target: Number(slicedArgs[0]),
       exerciseHours: numberArrayWithoutTargetValue,
     };
+  } else {
+    throw new Error('Provided values were not numbers');
   }
 };
 

@@ -29,4 +29,4 @@ const bmiResult = (bmi: number): string => {
     }
 }
 
-console.log(calculateBmi(180, 74));
+console.log(calculateBmi(192, 100));

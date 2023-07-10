@@ -6,6 +6,11 @@ const getPatients = (): Patient[] => {
   return patients;
 };
 
+const findPatientById = (id: string): Patient | undefined => {
+  const patient = patients.find((p) => p.id === id);
+  return patient;
+};
+
 const getSsnOmittedPatients = (): OmitPatientSSN[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
@@ -16,4 +21,4 @@ const getSsnOmittedPatients = (): OmitPatientSSN[] => {
   }));
 };
 
-export default { getPatients, getSsnOmittedPatients };
+export default { getPatients, getSsnOmittedPatients, findPatientById };

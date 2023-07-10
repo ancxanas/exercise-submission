@@ -2,7 +2,7 @@ import isEmpty from './isEmpty';
 import isString from './isString';
 
 const parseOccupation = (occupation: unknown): string => {
-  if (!isString(occupation) || isEmpty(occupation)) {
+  if (!isString(occupation) || isEmpty(occupation) || Number(occupation)) {
     throw new Error('Incorrect or missing occupation ' + occupation);
   }
 

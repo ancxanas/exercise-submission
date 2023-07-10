@@ -2,7 +2,9 @@ import isEmpty from './isEmpty';
 import isString from './isString';
 
 const parseName = (name: unknown) => {
-  if (!isString(name) || isEmpty(name)) {
+  console.log(typeof name);
+
+  if (!isString(name) || isEmpty(name) || Number(name)) {
     throw new Error('Incorrect or missing name: ' + name);
   }
 

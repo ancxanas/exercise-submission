@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import Content from './components/Content';
+import Part from './components/Part';
 import Total from './components/Total';
 
 interface CoursePartBase {
@@ -25,10 +25,16 @@ interface CoursePartBackground extends CoursePartDescription {
   kind: 'background';
 }
 
+interface CoursePartRequirements extends CoursePartDescription {
+  requirements: string[];
+  kind: 'special';
+}
+
 export type CoursePart =
   | CoursePartBasic
   | CoursePartGroup
-  | CoursePartBackground;
+  | CoursePartBackground
+  | CoursePartRequirements;
 
 const App = () => {
   const courseName = 'Half Stack application development';
@@ -65,12 +71,19 @@ const App = () => {
       description: 'a hard part',
       kind: 'basic',
     },
+    {
+      name: 'Backend development',
+      exerciseCount: 21,
+      description: 'Typing the backend',
+      requirements: ['nodejs', 'jest'],
+      kind: 'special',
+    },
   ];
 
   return (
     <div>
       <Header name={courseName} />
-      <Content courseParts={courseParts} />
+      <Part courseParts={courseParts} />
       <Total courseParts={courseParts} />
     </div>
   );

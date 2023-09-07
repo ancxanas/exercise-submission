@@ -1,11 +1,14 @@
 import { DiaryEntry } from "../types";
+import { useAppSelector } from "../hooks";
 
-const DiaryList = ({ diaries }: { diaries: DiaryEntry[] }) => {
+const DiaryList = () => {
+  const diaries = useAppSelector((state) => state.diary);
+
   return (
     <div>
       <h2>Diary entries</h2>
       <div>
-        {diaries.map((diary) => (
+        {diaries.map((diary: DiaryEntry) => (
           <div key={diary.id}>
             <h4>{diary.date}</h4>
             <p>visibility: {diary.visibility}</p>

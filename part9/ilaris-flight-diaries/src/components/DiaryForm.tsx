@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { addDiary } from "../diaryService";
-import { DiaryEntry } from "../types";
+import { useAppSelector } from "../hooks";
 
-const DiaryForm = ({ diaries }: { diaries: DiaryEntry[] }) => {
+const DiaryForm = () => {
+  const diaries = useAppSelector((state) => state.diary);
+
   const [date, setDate] = useState<string>("");
   const [weather, setWeather] = useState<string>("");
   const [visibility, setVisibility] = useState<string>("");
@@ -11,7 +13,7 @@ const DiaryForm = ({ diaries }: { diaries: DiaryEntry[] }) => {
   const createDiary = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const details = await addDiary({
+    const newDiary = await addDiary({
       id: diaries.length + 1,
       date,
       weather,
@@ -19,7 +21,7 @@ const DiaryForm = ({ diaries }: { diaries: DiaryEntry[] }) => {
       comment,
     });
 
-    console.log(details);
+    console.log(newDiary);
   };
 
   return (

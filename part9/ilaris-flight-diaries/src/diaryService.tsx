@@ -14,9 +14,9 @@ export const addDiary = async (diary: DiaryEntry) => {
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      return error.response?.data;
+      console.log(error.response?.data);
     } else {
-      return error;
+      console.log(error);
     }
   }
 };

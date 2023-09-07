@@ -1,20 +1,20 @@
 import DiaryList from "./components/DiaryList";
+import { useEffect } from "react";
+import { initializeDiaries } from "./reducers/diaryReducer";
+import { useAppDispatch } from "./hooks";
 import DiaryForm from "./components/DiaryForm";
-import { useEffect, useState } from "react";
-import { DiaryEntry } from "./types";
-import { getAllDiaries } from "./diaryService";
 
 const App = () => {
-  const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getAllDiaries().then((diaries) => setDiaries(diaries));
+    dispatch(initializeDiaries());
   }, []);
 
   return (
     <div>
-      <DiaryForm diaries={diaries} />
-      <DiaryList diaries={diaries} />
+      <DiaryForm />
+      <DiaryList />
     </div>
   );
 };

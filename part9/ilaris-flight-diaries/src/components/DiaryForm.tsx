@@ -1,31 +1,35 @@
 import { useState } from "react";
-import { addDiary } from "../diaryService";
-import { useAppSelector } from "../hooks";
+import { createNewDiary } from "../reducers/diaryReducer";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import Notification from "./Notification";
 
 const DiaryForm = () => {
   const diaries = useAppSelector((state) => state.diary);
+
+  const dispatch = useAppDispatch();
 
   const [date, setDate] = useState<string>("");
   const [weather, setWeather] = useState<string>("");
   const [visibility, setVisibility] = useState<string>("");
   const [comment, setComment] = useState<string>("");
 
-  const createDiary = async (event: React.SyntheticEvent) => {
+  const createDiary = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const newDiary = await addDiary({
+    const newDiary = {
       id: diaries.length + 1,
       date,
       weather,
       visibility,
       comment,
-    });
+    };
 
-    console.log(newDiary);
+    dispatch(createNewDiary(newDiary));
   };
 
   return (
     <form onSubmit={createDiary}>
+      <Notification />
       <div>
         <label>
           date

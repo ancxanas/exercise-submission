@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import diaryReducer from "./reducers/diaryReducer";
+import notificationReducer from "./reducers/notificationReducer";
 
 const store = configureStore({
   reducer: {
     diary: diaryReducer,
+    notification: notificationReducer,
   },
 });
 

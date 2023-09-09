@@ -1,7 +1,8 @@
-import DiaryList from "./components/DiaryList";
 import { useEffect } from "react";
 import { initializeDiaries } from "./reducers/diaryReducer";
 import { useAppDispatch } from "./hooks";
+
+import DiaryList from "./components/DiaryList";
 import DiaryForm from "./components/DiaryForm";
 
 const App = () => {

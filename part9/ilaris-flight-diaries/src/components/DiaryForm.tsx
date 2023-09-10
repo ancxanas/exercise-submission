@@ -13,7 +13,15 @@ const DiaryForm = () => {
   const [visibility, setVisibility] = useState<string>("");
   const [comment, setComment] = useState<string>("");
 
-  const createDiary = (event: React.SyntheticEvent) => {
+  const handleWeather = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWeather(event.target.value);
+  };
+
+  const handleVisibility = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVisibility(event.target.value);
+  };
+
+  const createDiary = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const newDiary = {
@@ -24,7 +32,12 @@ const DiaryForm = () => {
       comment,
     };
 
-    dispatch(createNewDiary(newDiary));
+    await dispatch(createNewDiary(newDiary));
+
+    setDate("");
+    setWeather("");
+    setVisibility("");
+    setComment("");
   };
 
   return (
@@ -34,7 +47,7 @@ const DiaryForm = () => {
         <label>
           date
           <input
-            type="text"
+            type="date"
             value={date}
             onChange={({ target }) => setDate(target.value)}
           />
@@ -42,22 +55,85 @@ const DiaryForm = () => {
       </div>
       <div>
         <label>
-          weather
-          <input
-            type="text"
-            value={weather}
-            onChange={({ target }) => setWeather(target.value)}
-          />
+          weather{" "}
+          <label>
+            sunny
+            <input
+              name="weather"
+              type="radio"
+              value="sunny"
+              onChange={handleWeather}
+              defaultChecked
+            />
+          </label>
+          <label>
+            rainy
+            <input
+              name="weather"
+              type="radio"
+              value="rainy"
+              onChange={handleWeather}
+            />
+          </label>
+          <label>
+            stormy
+            <input
+              name="weather"
+              type="radio"
+              value="stormy"
+              onChange={handleWeather}
+            />
+          </label>
+          <label>
+            windy
+            <input
+              name="weather"
+              type="radio"
+              value="windy"
+              onChange={handleWeather}
+            />
+          </label>
         </label>
       </div>
       <div>
         <label>
-          visibility
-          <input
-            type="text"
-            value={visibility}
-            onChange={({ target }) => setVisibility(target.value)}
-          />
+          visibility{" "}
+          <label>
+            great{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value="great"
+              onChange={handleVisibility}
+            />
+          </label>
+          <label>
+            good{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value="good"
+              onChange={handleVisibility}
+            />
+          </label>
+          <label>
+            ok{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value="ok"
+              onChange={handleVisibility}
+            />
+          </label>
+          <label>
+            poor{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value="poor"
+              onChange={handleVisibility}
+            />
+          </label>
         </label>
       </div>
       <div>
